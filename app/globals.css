@@ -3,9 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --light-green: rgb(209, 250, 229); /* green100 */
+  --dark-green: rgb(56, 178, 172);  /* green300 */
+
+  /* Other Theme Colors */
+  --primary-color: rgb(59, 130, 246);  /* blue500 */
+  --secondary-color: rgb(245, 158, 11); /* yellow400 */
+  --accent-color: rgb(251, 113, 133);  /* pink400 */
+  --background-color: rgb(243, 244, 246); /* gray100 */
+  --text-color: rgb(31, 41, 55); /* gray800 */
+  --border-color: rgb(209, 213, 219); /* gray300 */
+  --hover-color: rgb(37, 99, 235); /* blue600 */
+  --error-color: rgb(239, 68, 68); /* red500 */
+  --success-color: rgb(34, 197, 94); /* green500 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,21 +23,5 @@
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
   }
 }
