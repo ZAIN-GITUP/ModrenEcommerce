@@ -42,25 +42,7 @@ http://localhost:3000
 Navigate through the different sections on the landing page to explore various fashion products.
 Use the responsive menu to jump to different sections like Home, Shop, Features, and Contact.
 The shopping cart icon in the Navbar allows you to access the cart page.
-# Project Structure
-bash
-Copy code
-├── public
-│   ├── favicon.ico
-│   ├── logo.png
-├── src
-│   ├── components
-│   │   └── Button.tsx
-│   ├── sections
-│   │   ├── Hero.tsx
-│   │   ├── BestSelling.tsx
-│   │   ├── OurProducts.tsx
-│   │   ├── ExclusiveOffers.tsx
-│   │   ├── Designers.tsx
-│   │   ├── Feedbacks.tsx
-│   │   ├── Navbar.tsx
-│   │   ├── Footer.tsx
-│   └── styles
+
 │       └── globals.css
 ├── pages
 │   ├── _app.tsx
