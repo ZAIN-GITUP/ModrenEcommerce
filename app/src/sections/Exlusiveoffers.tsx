@@ -53,7 +53,7 @@ const ExclusiveOffer: React.FC = () => {
         <Image
           src={img}
           alt="Exclusive Offer"
-          className="w-full lg:w-1/2 xl:w-1/3 max-w-xs lg:max-w-none"
+          className="w-ful lg:w-1/3 xl:w-2/4 xl:ml-8 max-w-xs lg:max-w-none"
           layout="intrinsic"
         />
       </div>
