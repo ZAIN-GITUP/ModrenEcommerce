@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import React from "react";
 import { motion } from "framer-motion";
 
 const Contact: React.FC = () => {
   return (
     <motion.div
-      className="max-w-[700px] mx-auto my-[4rem] flex flex-col gap-4 items-center justify-center"
+      className="max-w-[700px] mx-auto my-[4rem] flex flex-col gap-4 items-center justify-center px-4"
       id="contact"
       initial="hidden"
       whileInView="visible"
@@ -16,11 +16,9 @@ const Contact: React.FC = () => {
         hidden: { opacity: 0, y: 0 },
       }}
     >
-    
-      <h2 className="text-var(--text-color)font-raleway text-var(--light-slate)">
+      <h2 className="text-var(--text-color) font-raleway text-[var(--light-slate)] text-center text-xl md:text-2xl lg:text-3xl">
         Get In Touch
       </h2>
-    
 
       {/* Contact Form Section */}
       <div className="mt-4 w-full">
@@ -29,7 +27,7 @@ const Contact: React.FC = () => {
             <input
               type="text"
               placeholder="Username"
-              className="flex-1 p-4 text-var(--text-color) border border-[var(--light-slate)]  rounded bg-var(--second-bg-color) text-var(--lightest-slate)"
+              className="flex-1 p-4 text-var(--text-color) border border-[var(--light-slate)] rounded bg-[var(--second-bg-color)] text-[var(--lightest-slate)]"
             />
             <input
               type="email"
@@ -59,7 +57,7 @@ const Contact: React.FC = () => {
           ></textarea>
           <button
             type="submit"
-            className="px-8 py-4 bg-[var(--theme-color)] text-black border border-[var(--light-slate)]  rounded cursor-pointer transition-colors duration-300 ease-in-out mt-4 hover:bg-[var(--light-slate)]"
+            className="px-8 py-4 bg-[var(--theme-color)] text-black border border-[var(--light-slate)] rounded cursor-pointer transition-colors duration-300 ease-in-out mt-4 hover:bg-[var(--light-slate)]"
           >
             Send Message
           </button>
