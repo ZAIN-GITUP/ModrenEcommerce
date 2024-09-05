@@ -16,6 +16,12 @@
   --hover-color: rgb(37, 99, 235); /* blue600 */
   --error-color: rgb(239, 68, 68); /* red500 */
   --success-color: rgb(34, 197, 94); /* green500 */
+   /* Custom Text Colors */
+   --tbase: var(--text-color);
+   --tgiant: var(--text-color); /* Same as --tbase, can be removed if redundant */
+   --tlarge: var(--text-color); /* Same as --text-color, can be removed if redundant */
+   --light-slate: var(--text-color); /* Same as --text-color, can be removed if redundant */
+   --lightest-slate: var(--text-color);
 }
 
 @media (prefers-color-scheme: dark) {

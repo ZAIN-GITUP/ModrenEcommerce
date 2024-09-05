@@ -1,12 +1,28 @@
-import React from 'react';
-import { useState } from 'react';
+"use client";
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
+
+// Import images
+import imgJohnDoe from '@/public/logo.png';
+import imgJaneSmith from '@/public/logo.png';
+import imgDavidBrown from '@/public/logo.png';
 
 const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
   const [showFullTestimonial, setShowFullTestimonial] = useState(false);
 
   return (
-    <div className="testimonial-card rounded-lg shadow-md p-6">
+    <div 
+      className="testimonial-card rounded-lg shadow-md p-6 bg-white transition-transform duration-300 ease-in-out hover:scale-105"
+      data-aos="fade-up"
+      data-aos-delay="200"
+    >
       <div className="testimonial-image flex justify-center mb-4">
         <Image src={testimonial.image} alt={testimonial.name} width={100} height={100} className="rounded-full" />
       </div>
@@ -17,7 +33,10 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
           {showFullTestimonial ? testimonial.fullText : testimonial.shortText}
         </p>
         {testimonial.fullText && (
-          <button className="read-more-button px-4 py-2 rounded-md bg-blue-500 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300" onClick={() => setShowFullTestimonial(!showFullTestimonial)}>
+          <button
+            className="read-more-button px-4 py-2 rounded-md bg-blue-500 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            onClick={() => setShowFullTestimonial(!showFullTestimonial)}
+          >
             {showFullTestimonial ? 'Read Less' : 'Read More'}
           </button>
         )}
@@ -31,43 +50,109 @@ interface Testimonial {
   role: string;
   shortText: string;
   fullText: string;
-  image: string;
+  image: any;
 }
 
 const Testimonials = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      easing: 'ease-in-out',
+      once: true,
+    });
+  }, []);
+
   const testimonials: Testimonial[] = [
     {
       name: 'John Doe',
       role: 'Software Engineer',
       shortText: 'This product is amazing! It helped me to...',
-      fullText: 'This product is absolutely amazing! It helped me to streamline my workflow and improve my productivity significantly. I was initially skeptical, but after trying it out, I was blown away. The ease of use and powerful features are truly impressive. I highly recommend this product to anyone looking for a solution to...',
-      image: '/images/testimonial-1.jpg',
+      fullText: 'This product is absolutely amazing! It helped me to streamline my workflow and improve my productivity significantly...',
+      image: imgJohnDoe,
     },
     {
       name: 'Jane Smith',
       role: 'Marketing Manager',
       shortText: 'I love how easy it is to use! I was able to...',
-      fullText: 'I love how easy this product is to use! I was able to create stunning marketing materials in a matter of minutes. The templates are well-designed and the customization options are endless. This product has made my job so much easier and more enjoyable. I highly recommend it to anyone in the marketing field.',
-      image: '/images/testimonial-2.jpg',
+      fullText: 'I love how easy this product is to use! I was able to create stunning marketing materials in a matter of minutes...',
+      image: imgJaneSmith,
     },
     {
       name: 'David Brown',
       role: 'Product Designer',
-      shortText: 'This product is a game-changer! It has helped me to...',
-      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively and create beautiful designs with ease. The intuitive interface and powerful tools make it a joy to use. I can\'t imagine working without it anymore.',
-      image: '/images/testimonial-3.jpg',
+      shortText: 'This product is a game-changer!...',
+      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
+      image: imgDavidBrown,
+    },
+    {
+      name: 'David Brown',
+      role: 'Product Designer',
+      shortText: 'This product is a game-changer!...',
+      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
+      image: imgDavidBrown,
+    },
+    {
+      name: 'David Brown',
+      role: 'Product Designer',
+      shortText: 'This product is a game-changer!...',
+      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
+      image: imgDavidBrown,
+    },
+    {
+      name: 'David Brown',
+      role: 'Product Designer',
+      shortText: 'This product is a game-changer!...',
+      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
+      image: imgDavidBrown,
+    },
+    {
+      name: 'David Brown',
+      role: 'Product Designer',
+      shortText: 'This product is a game-changer!...',
+      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
+      image: imgDavidBrown,
+    },
+    {
+      name: 'David Brown',
+      role: 'Product Designer',
+      shortText: 'This product is a game-changer!...',
+      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
+      image: imgDavidBrown,
     },
   ];
 
   return (
-    <section className="testimonials bg-gray-100 py-16">
+    <section className="testimonials bg-gray-100 py-16 overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="section-title text-3xl font-bold mb-8 text-center">What Our Customers Say</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Swiper
+          spaceBetween={20}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          modules={[Pagination, Autoplay]}
+          className="testimonial-slider"
+          breakpoints={{
+            100: {
+              slidesPerView: 1, // 1 card between 100px to 378px
+            },
+            379: {
+              slidesPerView: 2, // 2 cards between 379px to 678px
+            },
+            679: {
+              slidesPerView: 3, // 3 cards between 679px to 1024px
+            },
+            1025: {
+              slidesPerView: 4, // 4 cards for larger screens
+            },
+          }}
+        >
           {testimonials.map((testimonial) => (
-            <TestimonialCard key={testimonial.name} testimonial={testimonial} />
+            <SwiperSlide key={testimonial.name}>
+              <TestimonialCard testimonial={testimonial} />
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </section>
   );

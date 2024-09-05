@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { CgClose } from "react-icons/cg";
-import { FaShoppingCart } from "react-icons/fa"; // Add this import for the cart icon
+import { FaShoppingCart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Button from "@/app/src/componenets/Button";
+import Button from "@/app/src/componenets/Button"; 
 import Image from "next/image";
+import logo from '@/public/logo.png';
 
-import logo from '@/public/logo.png'
 function Navbar() {
   const [navbarVisible, setNavbarVisible] = useState(false);
   const [responsiveNavVisible, setResponsiveNavVisible] = useState(false);
@@ -75,28 +75,26 @@ function Navbar() {
           transition={{ duration: 0.3, ease: "easeInOut" }}
           style={{ color: "var(--dark-green)" }}
         >
-              <Image
+          <Image
             src={logo}
-            alt="Logo"
-            width={200}
-            height={50}
-            className="w-auto h-12 sm:h-16 object-cover rounded-lg"
+            alt='logo'
+            className="w-6 md:w-8 lg:w-10 xl:w-12 h-auto object-cover"
           />
-
         </motion.div>
 
         <div className="flex-1 flex justify-center md:justify-start">
           <div
             className={`${
               responsiveNavVisible
-                ? "fixed top-16 p-4 right-0 w-2/4 max-w-sm h-full bg-[var(--light-green)]"
+                ? "fixed mt-8 p-4 right-0 block bg-[var(--light-green)]"
                 : "hidden"
             } md:flex md:justify-center md:w-full md:top-0 md:right-0 md:relative md:h-auto`}
           >
-            <ul className="flex flex-col items-center space-y-4 md:space-y-0 md:flex-row md:space-x-6">
+            <ul className="flex flex-col h-full items-center space-y-0 md:space-y-0 md:flex-row md:space-x-6">
               {sectionLinks.map(({ name, link }, index) => (
                 <motion.li
                   key={name}
+                  className="w-full"
                   initial={{ opacity: 0, y: -25 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -107,7 +105,7 @@ function Navbar() {
                 >
                   <Link
                     href={link}
-                    className="nav-items-list-item-link"
+                    className="nav-items-list-item-link block text-center w-full py-2"
                     style={{ color: "var(--dark-green)" }}
                   >
                     {name}
@@ -118,9 +116,9 @@ function Navbar() {
           </div>
         </div>
 
-        <div className="flex space-x-4 items-center">
+        <div className="flex items-center space-x-4">
           <motion.div
-            className="hidden md:flex text-xl font-bold"
+            className="hidden md:flex text-xl font-bold items-center space-x-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -129,46 +127,26 @@ function Navbar() {
             <Link href="/cart" className="text-2xl">
               <FaShoppingCart />
             </Link>
-            
-            <Button text="LOGIN" link="/Login" />
+            <Button text="LOGIN" link="../forms/loginform" /> 
           </motion.div>
 
           <motion.div
-            className="hidden md:flex"
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-          </motion.div>
-
-          
-          <motion.div
-            className="md:hidden flex items-center space-x-8"
+            className="md:hidden flex items-center space-x-4"
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             style={{ color: "var(--dark-green)" }}
           >
-            <Link href="/cart" className="text-2xl  mx-6">
+            <Link href="/cart" className="text-2xl">
               <FaShoppingCart />
             </Link>
-          
-            
-          </motion.div>
-
-          <motion.div
-            className="md:hidden text-2xl"
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
             {responsiveNavVisible ? (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setResponsiveNavVisible(false);
                 }}
-                className="top-6 border-none"
+                className="text-2xl"
               >
                 <CgClose />
               </button>
@@ -178,7 +156,7 @@ function Navbar() {
                   e.stopPropagation();
                   setResponsiveNavVisible(true);
                 }}
-                className="absolute top-6 right-6 text-var(--dark-green) bg-transparent border-none"
+                className="text-2xl"
               >
                 <GiHamburgerMenu />
               </button>

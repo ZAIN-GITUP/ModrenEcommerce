@@ -1,21 +1,71 @@
+"use client";
+import React, { useEffect } from 'react';
 import Image from 'next/image';
-import React from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { motion } from 'framer-motion';
+
 import products from '@/app/src/componenets/products'; // Adjust the import path as needed
 
-const DesignerClothes = () => {
+const DesignerClothes: React.FC = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <div className="container mx-auto px-2 sm:px-4 py-8 sm:py-16">
-      <h2 className="text-xl sm:text-3xl font-bold text-center mb-4 sm:mb-8">
+      <motion.h2
+        className="text-xl sm:text-3xl font-bold text-center mb-4 sm:mb-8"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        data-aos="fade-up"
+      >
         Designer Clothes For You
-      </h2>
-      <p className="text-sm sm:text-base text-center mb-6 sm:mb-12">
-        Immerse yourself in the world of luxury fashion with our meticulously
-        crafted designer clothes!
-      </p>
+      </motion.h2>
+      <motion.p
+        className="text-sm sm:text-base text-center mb-6 sm:mb-12"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
+        Immerse yourself in the world of luxury fashion with our meticulously crafted designer clothes!
+      </motion.p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        transition={{ duration: 0.5, ease: 'easeOut', delay: 0.4 }}
+        data-aos="fade-up"
+        data-aos-delay="400"
+      >
         {products.map((product, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+          <motion.div
+            key={index}
+            className="bg-white rounded-lg shadow-lg p-4 sm:p-6"
+            initial="hidden"
+            animate="visible"
+            variants={itemVariants}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.1 }}
+            data-aos="fade-up"
+            data-aos-delay={`${500 + index * 100}`}
+          >
             <Image
               src={product.imgSrc}
               alt={product.title}
@@ -27,9 +77,9 @@ const DesignerClothes = () => {
             <p className="text-gray-600 text-xs sm:text-sm">{product.description}</p>
             <p className="text-xl font-bold mt-2">{product.price}</p>
             <p className="text-yellow-500 text-lg">{product.rating} ★</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
