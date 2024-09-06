@@ -30,4 +30,5 @@
     "types/**/*" // If you place your declaration file in a types directory
   ],
   "exclude": ["node_modules"]
+  
 }
