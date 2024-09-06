@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
-import otpimg from '../../assets/sign.png';
+import otpimg from '@/public/sign.png';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearVerifyCode } from '@/app/src/lib/features/slices/userslice';

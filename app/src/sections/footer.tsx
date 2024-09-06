@@ -26,6 +26,7 @@ const Footer = () => {
             <div className="space-y-4 mx-2 text-center md:text-left">
               <h3 className="text-lg font-bold">Shop</h3>
               <h2 className="text-2xl font-bold  mt-2 mb-4">Rivo</h2>
+              <ul className="list-none space-y-2">
                 <li>
                   <Link href="/">Products</Link>
                 </li>

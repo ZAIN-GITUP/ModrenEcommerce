@@ -1,5 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
+import Image from 'next/image'; // Import the Image component for optimization
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -30,7 +31,7 @@ const TestimonialData = [
   },
 ];
 
-const TestimonialCard  = () => {
+const TestimonialCard = () => {
   var settings = {
     dots: true,
     arrows: false,
@@ -90,16 +91,15 @@ const TestimonialCard  = () => {
         <div data-aos="zoom-in">
           <Slider {...settings}>
             {TestimonialData.map((data) => (
-              <div className="my-6">
-                <div
-                  key={data.id}
-                  className="flex flex-col gap-4 shadow-lg py-8 px-6 mx-4 rounded-xl dark:bg-gray-800 bg-primary/10 relative"
-                >
+              <div key={data.id} className="my-6"> {/* key prop applied here */}
+                <div className="flex flex-col gap-4 shadow-lg py-8 px-6 mx-4 rounded-xl dark:bg-gray-800 bg-primary/10 relative">
                   <div className="mb-4">
-                    <img
+                    <Image
                       src={data.img}
-                      alt=""
-                      className="rounded-full w-20 h-20"
+                      alt={data.name}
+                      className="rounded-full"
+                      width={80}
+                      height={80}
                     />
                   </div>
                   <div className="flex flex-col items-center gap-4">
@@ -123,4 +123,4 @@ const TestimonialCard  = () => {
   );
 };
 
-export default TestimonialCard ;
+export default TestimonialCard;
