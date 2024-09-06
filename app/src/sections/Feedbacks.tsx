@@ -84,46 +84,12 @@ const Testimonials = () => {
       fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
       image: imgDavidBrown,
     },
-    {
-      name: 'David Brown',
-      role: 'Product Designer',
-      shortText: 'This product is a game-changer!...',
-      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
-      image: imgDavidBrown,
-    },
-    {
-      name: 'David Brown',
-      role: 'Product Designer',
-      shortText: 'This product is a game-changer!...',
-      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
-      image: imgDavidBrown,
-    },
-    {
-      name: 'David Brown',
-      role: 'Product Designer',
-      shortText: 'This product is a game-changer!...',
-      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
-      image: imgDavidBrown,
-    },
-    {
-      name: 'David Brown',
-      role: 'Product Designer',
-      shortText: 'This product is a game-changer!...',
-      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
-      image: imgDavidBrown,
-    },
-    {
-      name: 'David Brown',
-      role: 'Product Designer',
-      shortText: 'This product is a game-changer!...',
-      fullText: 'This product is a game-changer! It has helped me to collaborate with my team more effectively...',
-      image: imgDavidBrown,
-    },
+    // Additional testimonials if needed
   ];
 
   return (
     <section className="testimonials bg-gray-100 py-16 overflow-hidden">
-      <div className="container mx-auto px-4">
+      <div className="container  mx-auto px-4">
         <h2 className="section-title text-3xl font-bold mb-8 text-center">What Our Customers Say</h2>
         <Swiper
           spaceBetween={20}
@@ -131,19 +97,22 @@ const Testimonials = () => {
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000 }}
           modules={[Pagination, Autoplay]}
-          className="testimonial-slider"
+          className="testimonial-slider "
           breakpoints={{
-            100: {
-              slidesPerView: 1, // 1 card between 100px to 378px
+            320: { // Added for very small screens
+              slidesPerView: 1,
             },
-            379: {
-              slidesPerView: 2, // 2 cards between 379px to 678px
+            480: { // Adjusted for larger mobile screens
+              slidesPerView: 1.2,
             },
-            679: {
-              slidesPerView: 3, // 3 cards between 679px to 1024px
+            768: { // Tablet size
+              slidesPerView: 2,
             },
-            1025: {
-              slidesPerView: 4, // 4 cards for larger screens
+            1024: { // Desktop size
+              slidesPerView: 3,
+            },
+            1440: { // Larger desktops
+              slidesPerView: 4,
             },
           }}
         >

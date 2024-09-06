@@ -110,8 +110,23 @@ function Navbar() {
                   >
                     {name}
                   </Link>
+                  
                 </motion.li>
+             
               ))}
+                 
+                 <motion.div
+            className=" md:hidden text-xl font-bold items-center space-x-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            style={{ color: "var(--dark-green)" }}
+          >
+        
+      
+            <Button text="LOGIN" link="/login" /> 
+          </motion.div>
+                  
             </ul>
           </div>
         </div>
@@ -127,7 +142,7 @@ function Navbar() {
             <Link href="/cart" className="text-2xl">
               <FaShoppingCart />
             </Link>
-            <Button text="LOGIN" link="../forms/loginform" /> 
+            <Button text="LOGIN" link="/login" /> 
           </motion.div>
 
           <motion.div

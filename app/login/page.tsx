@@ -8,7 +8,7 @@ import Image from 'next/image';
 import loginimage from '@/public/login.png';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { storeToken } from '../lib/features/slices/userslice';
+import { storeToken } from '../src/lib/features/slices/userslice';
 
 // Define types for the API response
 interface LoginResponse {
