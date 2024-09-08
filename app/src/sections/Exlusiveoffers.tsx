@@ -49,11 +49,11 @@ const ExclusiveOffer: React.FC = () => {
           Buy Now
         </button>
       </div>
-      <div className="hidden lg:block" data-aos="fade-left">
+      <div className="hidden  lg:block" data-aos="fade-left">
         <Image
           src={img}
           alt="Exclusive Offer"
-          className="w-full lg:w-1/2 xl:w-1/3 max-w-xs lg:max-w-none"
+          className="mx-auto object-cover mix-blend-multiply rounded-lg w-1/2"
           layout="intrinsic"
         />
       </div>

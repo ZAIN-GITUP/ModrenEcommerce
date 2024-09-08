@@ -25,7 +25,7 @@ export default function Home() {
             <section id="Features">
               <ExclusiveOffer />
               <DesignerClothes />
-        
+             {/* <TestimonialCard/> */}
             </section>
             <section id="contact">
           <Contact/>

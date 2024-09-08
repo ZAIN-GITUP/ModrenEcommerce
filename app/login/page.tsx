@@ -77,7 +77,7 @@ const Loginform: React.FC = () => {
   return (
     <section className="h-screen flex flex-col sm:flex-row md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
       <div className="md:w-1/3 max-w-xs">
-        <Image src={loginimage} alt="Sample image" />
+        <Image src={loginimage} className='sm:block hidden' alt="Sample image" />
       </div>
       <form className="md:w-1/3 max-w-sm" onSubmit={handleSubmit}>
         <div>

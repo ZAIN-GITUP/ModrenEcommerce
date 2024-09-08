@@ -62,12 +62,12 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 ${
+      className={`fixed top-0 left-0 w-full  z-50 ${
         navbarVisible ? "bg-green-100 shadow-lg" : "bg-transparent"
       } transition-all duration-300 ease-in-out`}
       data-aos="fade-down"
     >
-      <div className="relative flex items-center justify-between py-4 px-6">
+      <div className="relative flex max-w-7xl mx-auto  items-center justify-between py-4 px-6">
         <motion.div
           className="text-xl font-bold"
           initial={{ opacity: 0 }}
