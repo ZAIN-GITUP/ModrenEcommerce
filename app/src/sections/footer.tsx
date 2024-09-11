@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col-reverse md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0 text-center md:text-left">
-            <h2 className="text-2xl font-bold  mt-2 mb-4">Rivo</h2>
+            <h2 className="text-2xl font-bold  mb-4">Elpha</h2>
             <div className="flex justify-center md:justify-start space-x-4">
               <Link href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
                 <FaFacebookF size={24} />
@@ -25,7 +25,7 @@ const Footer = () => {
           <div className="flex flex-wrap justify-center md:justify-between space-y-0 md:space-y-0 md:space-x-12">
             <div className="space-y-4 mx-2 text-center md:text-left">
               <h3 className="text-lg font-bold">Shop</h3>
-              <h2 className="text-2xl font-bold  mt-2 mb-4">Rivo</h2>
+    
               <ul className="list-none space-y-2">
                 <li>
                   <Link href="/">Products</Link>
@@ -60,8 +60,8 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8text-center text-sm">
-          <p>© {new Date().getFullYear()} Rivo. All rights reserved.</p>
+        <div className="mt-8 justify-center text-center text-sm">
+          <p>© {new Date().getFullYear()} Elpha. All rights reserved.</p>
           <ul className="list-none flex justify-center space-x-4 mt-4">
             <li>
               <Link href="/">Terms</Link>

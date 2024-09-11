@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import Image from 'next/image';
 import signinimg from '@/public/sign.png';
 import { useRouter } from 'next/navigation';
@@ -8,59 +8,44 @@ import { useDispatch } from "react-redux";
 import { storeverifycode } from "@/app/src/lib/features/slices/userslice";
 import axios from 'axios';
 
-interface FormData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  showPassword: boolean;
-  showConfirmPassword: boolean;
-  isChecked: boolean;
-}
-
 const SignupForm = () => {
-  const initialData: FormData = {
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    showPassword: false,
-    showConfirmPassword: false,
-    isChecked: false,
-  };
-
-  const [formData, setFormData] = useState<FormData>(initialData);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const initialData = { username: "", email: "", password: "" };
+  const [inputdata, setInputdata] = useState<typeof initialData>(initialData);
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
   const validate = () => {
-    const newErrors: { [key: string]: string } = {};
+    const newErrors: Record<string, string> = {};
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
 
-    if (!formData.username) {
+    if (!inputdata.username) {
       newErrors.username = 'Username is required';
     }
-    if (!formData.email) {
+    if (!inputdata.email) {
       newErrors.email = 'Email is required';
-    } else if (!emailPattern.test(formData.email)) {
+    } else if (!emailPattern.test(inputdata.email)) {
       newErrors.email = 'Email is invalid';
     }
 
-    if (!formData.password) {
+    if (!inputdata.password) {
       newErrors.password = 'Password is required';
-    } else if (!passwordPattern.test(formData.password)) {
+    } else if (!passwordPattern.test(inputdata.password)) {
       newErrors.password = 'Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character';
     }
 
-    if (!formData.confirmPassword) {
+    if (!confirmPassword) {
       newErrors.confirmPassword = 'Confirm Password is required';
-    } else if (formData.password !== formData.confirmPassword) {
+    } else if (inputdata.password !== confirmPassword) {
       newErrors.confirmPassword = 'Passwords must match';
     }
 
-    if (!formData.isChecked) {
+    if (!isChecked) {
       newErrors.terms = 'You must agree to the terms and conditions';
     }
 
@@ -73,26 +58,27 @@ const SignupForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (handleValidation()) {
       try {
         const response = await axios.post(
-          'https://management-system-backend-0wae.onrender.com/signup/mongo/',
-          {
-            username: formData.username,
-            email: formData.email,
-            password: formData.password,
-          }
+          '',
+          inputdata
         );
-
-        const verifyCode = (response.data as { verifyCode: string }).verifyCode;
-
-        if (verifyCode) {
-          dispatch(storeverifycode(verifyCode));
+  
+        // Accessing the verifyCode from the response
+        const verifycode = response.data.verifyCode;
+        
+        // Ensure verifyCode is defined before dispatching
+        if (verifycode) {
+          dispatch(storeverifycode(verifycode));
+          console.log('verifycode stored in Redux:');
+        } else {
+          console.error('verifycode is undefined in the response');
         }
-
+  
         alert('Sign up successful!');
         router.push('/otpform');
       } catch (error) {
@@ -102,115 +88,120 @@ const SignupForm = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInputdata({
+      ...inputdata,
+      [name]: value,
     });
   };
 
   const togglePasswordVisibility = () => {
-    setFormData({ ...formData, showPassword: !formData.showPassword });
+    setShowPassword(!showPassword);
   };
 
   const toggleConfirmPasswordVisibility = () => {
-    setFormData({ ...formData, showConfirmPassword: !formData.showConfirmPassword });
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
-    <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
-      <div className="hidden md:block md:w-1/3 mb-16 max-w-sm">
-        <Image src={signinimg} alt="Sample image" width={500} height={500} />
+    <section className="h-screen  bg-[var(--light-green)] flex flex-col md:flex-row justify-center space-y-10 md:space-y-4 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+      <div className="md:w-1/3 mb-0 max-w-sm hidden md:block  boder  border-1 border-rounded-lg">
+        <Image src={signinimg} alt="Sample image" width={300} height={300} />
       </div>
-      <form className="md:w-1/3 max-w-xs p-4 bg-white border border-gray-300 rounded-lg shadow-md" onSubmit={handleSubmit}>
+      <form className="md:w-1/3 max-w-xs" onSubmit={handleSubmit}>
         <div>
-          <h2 className="text-text-color font-bold text-2xl mb-2">Welcome</h2>
-          <p className="text-text-color mb-4 text-lg">Welcome! Please enter your details.</p>
+   
+          <p className="text-[var(--dark-green)] w-full mb-4 mt-6" style={{ fontFamily: 'Space Grotesk', fontWeight: 400, fontSize: '18px', lineHeight: '25.52px' }}>Welcome! Please enter your details.</p>
         </div>
-        <div className="mb-2">
+        <div className="mb-1">
           <input
-            className={`text-sm w-full px-4 py-2 border-b border-solid ${errors.username ? 'border-error-color' : 'border-border-color'}`}
+            className={`text-sm w-full px-4 py-2 border-b text-[var(--dark-green)]  bg-[var(--inputs)]  ${errors.username ? 'border-[var(--text-green)] ' : 'border-[var(--text-green)] '}`}
             type="text"
             placeholder="Username"
             name="username"
-            value={formData.username}
+            value={inputdata.username}
             onChange={handleInputChange}
           />
-          {errors.username && <p className="text-error-color text-xs mt-1">{errors.username}</p>}
+          {errors.username && <p className="text-[var(--text-green)]  text-xs mt-1">{errors.username}</p>}
         </div>
-        <div className="mb-2">
+        <div className="mb-1">
           <input
-            className={`text-sm w-full px-4 py-2 border-b border-solid ${errors.email ? 'border-error-color' : 'border-border-color'}`}
+            className={`text-sm w-full px-4 py-2 border-b text-[var(--dark-green)] bg-[var(--inputs)]   ${errors.email ? 'border-[var(--text-green)] ' : 'border-[var(--text-green)] '}`}
             type="text"
             placeholder="Email Address"
             name="email"
-            value={formData.email}
+            value={inputdata.email}
             onChange={handleInputChange}
           />
-          {errors.email && <p className="text-error-color text-xs mt-1">{errors.email}</p>}
+          {errors.email && <p className="text-[var(--text-green)]  text-xs mt-1">{errors.email}</p>}
         </div>
-        <div className="mb-2 relative">
+        <div className="mb-1 relative">
           <input
-            className={`text-sm w-full px-4 py-2 border-b border-solid ${errors.password ? 'border-error-color' : 'border-border-color'}`}
-            type={formData.showPassword ? "text" : "password"}
+            className={`text-sm w-full px-4 py-2 border-b text-[var(--dark-green)]   bg-[var(--inputs)]  ${errors.password ? 'border-[var(--text-green)] ' : 'border-[var(--text-green)] '}`}
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             name="password"
-            value={formData.password}
+            value={inputdata.password}
             onChange={handleInputChange}
           />
           <button
             type="button"
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+            className="absolute opacity-45 inset-y-0 right-0 flex items-center pr-3 text-[var(--dark-green)] "
             onClick={togglePasswordVisibility}
           >
-            {formData.showPassword ? <FaEyeSlash /> : <FaEye />}
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
-        {errors.password && <p className="text-error-color text-xs mt-1">{errors.password}</p>}
-        <div className="mb-2 relative">
+        <div>
+          {errors.password && <p className="text-[var(--text-green)]  text-xs mt-1">{errors.password}</p>}
+        </div>
+        <div className="mb-1 relative">
           <input
-            className={`text-sm w-full px-4 py-2 border-b border-solid ${errors.confirmPassword ? 'border-error-color' : 'border-border-color'}`}
-            type={formData.showConfirmPassword ? "text" : "password"}
+            className={`text-sm w-full px-4 py-2 border-b text-[var(--dark-green)]   bg-[var(--inputs)]  ${errors.confirmPassword ? 'border-[var(--text-green)]  text-[var(--text-green)] ' : 'border-[var(--text-green)] '}`}
+            type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm Password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <button
             type="button"
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+            className="absolute opacity-45 inset-y-0 right-0 flex items-center pr-3 text-[var(--dark-green)] "
             onClick={toggleConfirmPasswordVisibility}
           >
-            {formData.showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
-        {errors.confirmPassword && <p className="text-error-color text-xs mt-1">{errors.confirmPassword}</p>}
-        <div className="mt-4 flex items-center text-sm">
-          <input
-            className="mr-2"
-            type="checkbox"
-            name="isChecked"
-            checked={formData.isChecked}
-            onChange={handleInputChange}
-          />
-          <label className="text-text-color">I agree to the terms & conditions</label>
+        <div>
+          {errors.confirmPassword && <p className="text-[var(--text-green)]  text-xs mt-1">{errors.confirmPassword}</p>}
         </div>
-        {errors.terms && <p className="text-error-color text-xs mt-1">{errors.terms}</p>}
-        <div className="text-center mt-4">
+        <div className="mt-4 flex justify-between font-semibold text-sm">
+          <label className="flex text-[var(--dark-green)]  hover:text-[var(--text-green)]  cursor-pointer">
+            <input
+              className="mr-1"
+              type="checkbox"
+              checked={isChecked}
+              onChange={() => setIsChecked(!isChecked)}
+            />
+            <span>I agree to the terms & conditions</span>
+          </label>
+        </div>
+        {errors.terms && <p className="text-[var(--text-green)]  text-xs mt-1">{errors.terms}</p>}
+        <div className="text-center md:text-left">
           <button
-            className="bg-primary-color hover:bg-hover-color text-white w-full h-10 px-4 py-2 rounded text-sm uppercase"
+            className="mt-4 bg-[var(--text-green)] hover:bg-[var(--hover-green)]  hover:text-[var(--dark-green)]  w-full h-10 px-4 py-2 text-black  uppercase rounded text-xs tracking-wider"
             type="submit"
           >
-            Sign up
+            Sign Up
           </button>
         </div>
-        <div className="text-center mt-4 text-sm text-text-color">
+        <div className="mt-4 font-semibold text-sm text-[var(--dark-green)]  text-center md:text-center">
           Already have an account?{" "}
-          <a className="text-secondary-color hover:underline" href="#">
-            Sign in
+          <a className="text-[var(--text-green)] hover:underline hover:underline-offset-4" href="/login">
+            Login
           </a>
         </div>
+
       </form>
     </section>
   );

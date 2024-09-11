@@ -48,7 +48,7 @@ const EmailForm: React.FC = () => {
   
     try {
       // Make the POST request using Axios
-      const response = await axios.post('https://management-system-backend-0wae.onrender.com/verify-email/mongo/', data, {
+      const response = await axios.post('', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -84,14 +84,14 @@ const EmailForm: React.FC = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+    <div className="bg-[var(--light-green)] h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
       <div className="md:w-1/3 max-w-xs">
         <Image src={forgotpasswordimage} alt="Sample image" />
       </div>
-      <form className="bg-white p-8 rounded shadow-md w-full max-w-md" onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Forgot Password</h2>
+      <form className="bg-[var(--light-green)] p-8 rounded shadow-md w-full max-w-md" onSubmit={handleSubmit}>
+        <h2 className="text-2xl font-bold mb-6 text-[var(--dark-green)] text-center">Forgot Password</h2>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+          <label className="block text-[var(--dark-green)] text-sm font-bold mb-2" htmlFor="email">
             Email Address
           </label>
           <input
@@ -99,16 +99,16 @@ const EmailForm: React.FC = () => {
             id="email"
             value={email}
             onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full text-[var(--dark-green)]    bg-[var(--inputs)] p-2 border border-[var(--light-green)] rounded focus:outline-none focus:ring-2 focus:ring-[var(--dark-green)]"
             placeholder="Enter your email"
           />
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          {message && <p className="text-green-500 text-sm mt-2">{message}</p>}
+          {error && <p className="text-[var(--dark-green)] text-sm mt-2">{error}</p>}
+          {message && <p className="text-[var(--text-green)] text-sm mt-2">{message}</p>}
         </div>
         
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full bg-[var(--text-green)] text-black p-2 rounded hover:bg-[var(--hover-green)]focus:outline-none focus:ring-2 focus:ring-[var(--light-green)]"
         >
           VERIFY EMAIL
         </button>

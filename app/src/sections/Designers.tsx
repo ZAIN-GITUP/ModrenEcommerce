@@ -75,8 +75,12 @@ const DesignerClothes: React.FC = () => {
             />
             <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{product.title}</h3>
             <p className="text-gray-600 text-xs sm:text-sm">{product.description}</p>
-            <p className="text-xl font-bold mt-2">{product.price}</p>
-            <p className="text-yellow-500 text-lg">{product.rating} ★</p>
+            <div className="flex justify-center items-center mt-2">
+              <p className="text-lg sm:text-xl font-bold">{product.price}</p>
+              <span className="mx-2 text-gray-600">|</span>
+              <p className="text-yellow-500 text-lg">{product.rating} ★</p>
+            </div>
+            
           </motion.div>
         ))}
       </motion.div>

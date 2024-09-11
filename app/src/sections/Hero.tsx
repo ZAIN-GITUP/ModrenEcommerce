@@ -1,5 +1,5 @@
 import React from 'react';
-import banner from '@/public/images.jpeg'
+import banner from '@/public/images.png'
 import Image from 'next/image';
 const Hero = () => {
   return (

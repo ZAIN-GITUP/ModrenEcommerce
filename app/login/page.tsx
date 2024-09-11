@@ -49,7 +49,7 @@ const Loginform: React.FC = () => {
     const newErrors = validate();
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post<LoginResponse>('https://management-system-backend-0wae.onrender.com/login/mongo/', {
+        const response = await axios.post<LoginResponse>('', {
           email,
           password,
         });
@@ -75,28 +75,28 @@ const Loginform: React.FC = () => {
   };
 
   return (
-    <section className="h-screen flex flex-col sm:flex-row md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
-      <div className="md:w-1/3 max-w-xs">
-        <Image src={loginimage} className='sm:block hidden' alt="Sample image" />
+    <section className="h-screen  bg-[var(--light-green)] flex flex-col sm:flex-row md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+      <div className="md:w-1/3 max-w-xs ">
+        <Image src={loginimage} className='sm:block hidden  mb-4' alt="Sample image" />
       </div>
       <form className="md:w-1/3 max-w-sm" onSubmit={handleSubmit}>
         <div>
-          <h2 className="text-gray-950 w-full font-bold h-6" style={{ fontFamily: 'Manrope', fontSize: '32px', fontWeight: 800, lineHeight: '49.18px', textAlign: 'left' }}>Welcome back</h2>
-          <p className="text-gray-900 w-full mb-8 mt-6" style={{ fontFamily: 'Space Grotesk', fontWeight: 400, fontSize: '18px', lineHeight: '25.52px' }}>Welcome back! Please enter your details.</p>
+          <h2 className="text-[var(--dark-green)] w-full font-bold h-6" style={{ fontFamily: 'Manrope', fontSize: '32px', fontWeight: 800, lineHeight: '49.18px', textAlign: 'left' }}>Welcome back</h2>
+          <p className="text-[var(--dark-green)]  w-full mb-8 mt-6" style={{ fontFamily: 'Space Grotesk', fontWeight: 400, fontSize: '18px', lineHeight: '25.52px' }}>Welcome back! Please enter your details.</p>
         </div>
         <div className="mb-4">
           <input
-            className={`text-sm w-full px-4 py-2 border-b border-solid ${errors.email ? 'border-red-500' : 'border-gray-600'}`}
+            className={`text-sm text-[var(--dark-green)] bg-[var(--inputs)]   w-full px-4 py-2 border-b  border-[var(--dark-green)] ${errors.email ? 'border-[var(--dark-green)]' : 'text-[var(--dark-green)]'}`}
             type="text"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+          {errors.email && <p className="text-[var(--text-green)] text-xs mt-1">{errors.email}</p>}
         </div>
         <div className="mb-4 relative">
           <input
-            className={`text-sm w-full px-4 py-2 border-b border-solid ${errors.password ? 'border-red-500' : 'border-gray-600'}`}
+            className={`text-sm w-full px-4 py-2 border-b  border-[var(--dark-green)]  bg-[var(--inputs)]   ${errors.password ? 'border-[var(--dark-green)]' : 'border-var(--dark-green)'}`}
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={password}
@@ -104,33 +104,33 @@ const Loginform: React.FC = () => {
           />
           <button
             type="button"
-            className="absolute opacity-45 inset-y-0 right-0 flex items-center p-3"
+            className="absolute  text-[var(--text-green)] opacity-45 inset-y-0 right-0 flex items-center p-3"
             onClick={togglePasswordVisibility}
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
-          {errors.password && <p className="text-red-500 text-xs mt-2 absolute -bottom-5 left-0">{errors.password}</p>}
+          {errors.password && <p className="text-[var(--text-green)] text-xs mt-2 absolute -bottom-5 left-0">{errors.password}</p>}
         </div>
-        <div className="mt-8 flex justify-between font-semibold text-sm">
-          <label className="flex text-slate-500 hover:text-slate-600 cursor-pointer">
-            <input className="mr-1" type="checkbox" />
+        <div className="mt-8 flex justify-between font-semibold text-sm text-[var(--dark-green)] ">
+          <label className="flex text-[var(--dark-green)] hover:text-[var(--text-green)]  cursor-pointer">
+            <input className="mr-1 bg-[var(--dark-green)]  " type="checkbox" />
             <span>Remember Me</span>
           </label>
-          <Link href="/emailverify" className="text-blue-600 hover:text-blue-800 hover:underline hover:underline-offset-4">
+          <Link href="/emailverify" className="text-[var(--dark-green)] hover:text-[var(--text-green)]  hover:underline hover:underline-offset-4">
             Forgot Password?
           </Link>
         </div>
         <div className="text-center md:text-left">
           <button
-            className="mt-4 bg-black hover:bg-gray-900 w-full h-10 px-4 py-2 text-white rounded text-xs tracking-wider uppercase"
+            className="mt-4 bg-[var(--text-green)] text-black hover:text-[var(--dark-green)]   hover:bg-[var(--hover-green)] w-full h-10 px-4 py-2 text-[var(--dark-green)]  rounded text-xs tracking-wider uppercase"
             type="submit"
           >
             Log in
           </button>
         </div>
-        <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-center">
+        <div className="mt-4 font-semibold text-sm text-[var(--dark-green)] text-center md:text-center">
           Don&apos;t have an account?{" "}
-          <Link href="/signin" className="text-blue-600 hover:text-blue-800 hover:underline hover:underline-offset-4">
+          <Link href="/signin" className="text-[var(--text-green)] hover:text-[var(--dark-green)] hover:underline hover:underline-offset-4">
             SIGN UP
           </Link>
         </div>

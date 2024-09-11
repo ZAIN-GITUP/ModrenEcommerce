@@ -12,7 +12,7 @@ const ExclusiveOffer: React.FC = () => {
 
   return (
     <section
-      className="bg-green-100 p-2 sm:p-4 md:p-6 lg:p-8 xl:p-10 flex flex-col lg:flex-row justify-between items-center"
+      className="bg-[var(--light-green)] p-2 sm:p-4 md:p-6 lg:p-8 xl:p-10 flex flex-col lg:flex-row justify-between items-center"
       data-aos="fade-up"
     >
       <div
