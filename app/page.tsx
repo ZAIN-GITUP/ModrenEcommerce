@@ -19,12 +19,12 @@ export default function Home() {
               <Hero />
             </section>
             <section id="Shop">
-              <BestSelling />
+              <BestSelling/>
               <OurProducts />
             </section>
             <section id="Features">
               <ExclusiveOffer />
-              <DesignerClothes />
+       <DesignerClothes/>
              {/* <TestimonialCard/> */}
             </section>
             <section id="contact">

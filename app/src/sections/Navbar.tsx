@@ -1,14 +1,22 @@
-"use client";
-import { useEffect, useState } from "react";
+"use client"
+import React, { useEffect, useState, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { CgClose } from "react-icons/cg";
 import { FaShoppingCart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation"; // Import useRouter for manual route handling
+import { usePathname, useRouter } from "next/navigation";
 import Button from "@/app/src/componenets/Button";
 import Image from "next/image";
 import logo from '@/public/logo.png';
+import { useSelector } from 'react-redux'; 
+type CartItem = {
+  id: number;
+  title: string;
+  image: string;
+  price: number;
+  quantity: number;
+};
 
 function Navbar() {
   const [state, setState] = useState({
@@ -17,8 +25,11 @@ function Navbar() {
     cartVisible: false,
   });
 
+  const cartPopupRef = useRef<HTMLDivElement>(null); // Ref for CartPopup
   const router = useRouter();
   const pathname = usePathname();
+
+  const cartItems = useSelector((state: any) => state.cart); // Get cart items from Redux store
 
   const sectionLinks = [
     { name: "Home", link: "/#Home" },
@@ -27,17 +38,6 @@ function Navbar() {
     { name: "Contact", link: "/#contact" },
   ];
 
-  // Close the cart when navigating to "/cart" and prevent reloading
-  const handleCartNavigation = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setState((prevState) => ({
-      ...prevState,
-      cartVisible: false,
-    }));
-    router.push("/cart"); // Client-side navigation to avoid reload
-  };
-
-  // Close cart when navigating to /cart
   useEffect(() => {
     if (pathname === "/cart") {
       setState((prevState) => ({
@@ -47,7 +47,6 @@ function Navbar() {
     }
   }, [pathname]);
 
-  // Handle scroll to toggle the navbar visibility
   useEffect(() => {
     const handleScroll = () => {
       setState((prevState) => ({
@@ -61,43 +60,40 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handleLinkClick = () =>
-      setState((prevState) => ({
-        ...prevState,
-        responsiveNavVisible: false,
-      }));
-
-    const links = document.querySelectorAll(".nav-items-list-item-link");
-    links.forEach((link) => {
-      link.addEventListener("click", handleLinkClick);
-    });
-
-    const nav = document.querySelector(".nav-items");
-    nav?.addEventListener("click", (e) => e.stopPropagation());
-
-    const html = document.querySelector("html");
-    html?.addEventListener("click", () =>
-      setState((prevState) => ({
-        ...prevState,
-        responsiveNavVisible: false,
-      }))
-    );
-
-    return () => {
-      links.forEach((link) => {
-        link.removeEventListener("click", handleLinkClick);
-      });
-      html?.removeEventListener("click", () =>
+    const handleClickOutside = (e: MouseEvent) => {
+      if (cartPopupRef.current && !cartPopupRef.current.contains(e.target as Node)) {
         setState((prevState) => ({
           ...prevState,
-          responsiveNavVisible: false,
-        }))
-      );
+          cartVisible: false,
+        }));
+      }
     };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Cart popup component
+  const handleCartNavigation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setState((prevState) => ({
+      ...prevState,
+      cartVisible: false,
+    }));
+    setTimeout(() => {
+      router.push("/cart");
+    }, 300);
+  };
+
+ 
+
   const CartPopup = () => {
+    const cartItems: CartItem[] = useSelector((state: any) => state.cart || []);
+
+  
+    const getTotalPrice = () => {
+      return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    };
+  
     return (
       <div
         className={`fixed top-0 right-0 w-full sm:w-1/3 h-full bg-[var(--light-green)] shadow-lg transform ${
@@ -119,43 +115,46 @@ function Navbar() {
               &times;
             </button>
           </div>
-
+  
           <div className="my-4">
-            {/* Cart Item */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <Image
-                  src={logo}
-                  alt="Sample Product"
-                  className="w-16 h-16 object-cover mr-4"
-                />
-                <div>
-                  <h3 className="font-semibold">Sample Product</h3>
-                  <div className="flex items-center space-x-2 mt-2">
-                    <button className="p-1 border border-gray-400">-</button>
-                    <span className="font-medium">1</span>
-                    <button className="p-1 border border-gray-400">+</button>
+            {cartItems.length > 0 ? (
+              cartItems.map((item: any) => (
+                <div key={item.id} className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      className="w-16 h-16 object-cover mr-4"
+                    />
+                    <div>
+                      <h3 className="font-semibold">{item.title}</h3>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <button className="p-1 border border-gray-400">-</button>
+                        <span className="font-medium">{item.quantity}</span>
+                        <button className="p-1 border border-gray-400">+</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+                    <button className="ml-2 text-red-500 text-xl">&times;</button>
                   </div>
                 </div>
-              </div>
-              <div>
-                <span className="font-semibold">$50.00</span>
-                <button className="ml-2 text-red-500 text-xl">&times;</button>
-              </div>
-            </div>
+              ))
+            ) : (
+              <div>No items in cart</div>
+            )}
           </div>
-
-          {/* Subtotal and Buttons */}
+  
           <div className="border-t pt-4">
             <div className="flex justify-between mb-4">
               <span className="font-semibold">Subtotal:</span>
-              <span className="font-semibold">$50.00</span>
+              <span className="font-semibold">${getTotalPrice()}</span>
             </div>
-
-            {/* Handle cart navigation without page reload */}
+  
             <button
               onClick={handleCartNavigation}
-              className="bg-[var(--text-green)] text-[var(--hover-green)] py-2 rounded"
+              className="bg-[var(--text-green)] text-[var(--hover-green)] py-2 rounded w-full"
             >
               View Cart
             </button>
@@ -164,6 +163,7 @@ function Navbar() {
       </div>
     );
   };
+  
 
   return (
     <>
@@ -259,17 +259,18 @@ function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-            >   <button
-            onClick={() =>
-              setState((prevState) => ({
-                ...prevState,
-                cartVisible: true,
-              }))
-            }
-            className="text-2xl"
-          >
-            <FaShoppingCart />
-          </button>
+            >
+              <button
+                onClick={() =>
+                  setState((prevState) => ({
+                    ...prevState,
+                    cartVisible: true,
+                  }))
+                }
+                className="text-2xl"
+              >
+                <FaShoppingCart />
+              </button>
               <button
                 onClick={() =>
                   setState((prevState) => ({
@@ -281,13 +282,12 @@ function Navbar() {
               >
                 {state.responsiveNavVisible ? <CgClose /> : <GiHamburgerMenu />}
               </button>
-           
             </motion.div>
           </div>
         </div>
       </nav>
 
-      {/* Cart Popup */}
+      {/* Render CartPopup */}
       {state.cartVisible && <CartPopup />}
     </>
   );

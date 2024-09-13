@@ -65,7 +65,7 @@ const DesignerClothes: React.FC = () => {
         {limitedProducts?.map((product: Product, index: number) => (
           <motion.div
             key={product.id}
-            className="text-center bg-white rounded-lg shadow-lg p-4 m-2 w-full sm:w-80 md:w-96 lg:w-64"
+            className="text-center bg-white rounded-lg shadow-lg py-4 my-2 w-full sm:w-80 md:w-96 lg:w-64"
             variants={itemVariants}
             transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.1 }}
             data-aos="zoom-in"

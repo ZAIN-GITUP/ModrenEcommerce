@@ -5,7 +5,7 @@ const initialState = {
   user: null,
   email: null,
   verifycode: null,
-  token: null
+  token: null,
 };
 
 const userSlice = createSlice({
@@ -24,12 +24,11 @@ const userSlice = createSlice({
     clearVerifyCode: (state) => {
       state.verifycode = null;
     },
-    storeToken: (state, action) => { // Add action to store token
+    storeToken: (state, action) => {
       state.token = action.payload;
+    },
   },
+});
 
-
-}});
-
-export const { storeUser, storeEmail, storeverifycode, clearVerifyCode,storeToken } = userSlice.actions;
+export const { storeUser, storeEmail, storeverifycode, clearVerifyCode, storeToken } = userSlice.actions;
 export default userSlice.reducer;
