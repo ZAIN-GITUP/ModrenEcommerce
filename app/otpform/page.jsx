@@ -71,12 +71,12 @@ const OTPForm = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
-      <div className="md:w-1/3 mb-16 max-w-sm">
+    <div className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center bg-[var(--light-green)] md:mx-0 md:my-0">
+      <div className=" sm:block hidden   mt-14 md:w-1/3 mb-16 max-w-sm">
         <Image src={otpimg} alt="Sample image" />
       </div>
-      <form className="bg-white p-8 rounded shadow-md w-full max-w-md" onSubmit={handleSubmit}>
-        <h2 className="text-gray-950 w-full font-bold h-6 mb-12 align-center" style={{ fontFamily: 'Manrope', fontSize: '32px', fontWeight: 800, lineHeight: '49.18px', textAlign: 'center' }}>Enter OTP</h2>
+      <form className=" p-8 rounded sm:shadow-md w-full max-w-md" onSubmit={handleSubmit}>
+        <h2 className="text-[var(--dark-green)]  w-full font-bold h-6 mb-12 align-center" style={{ fontFamily: 'Manrope', fontSize: '32px', fontWeight: 800, lineHeight: '49.18px', textAlign: 'center' }}>Enter OTP</h2>
         <div className="flex justify-center space-x-2 mb-4">
           {otp.map((data, index) => (
             <input
@@ -88,14 +88,14 @@ const OTPForm = () => {
               onKeyDown={(e) => handleKeyDown(e, index)}
               onFocus={(e) => e.target.select()}
               ref={(el) => (inputs.current[index] = el)}
-              className="w-10 h-10 sm:w-12 sm:h-12 text-center text-xl border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-10 h-10 sm:w-12 sm:h-12 text-center text-xl border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[var(--hover-green)] "
             />
           ))}
         </div>
-        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+        {error && <p className="text-[var(--dark-green)] text-sm mb-4 text-center">{error}</p>}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full bg-[var(--text-green)] text-white p-2 rounded   hover:bg-[var(--hover-green)]  hover:text-[var(--dark-green)]  focus:outline-none focus:ring-2 focus:ring-[var(--light-green)]"
         >
           Submit
         </button>

@@ -60,12 +60,12 @@ const ResetPasswordForms = () => {
   };
 
   return (
-    <div className="h-screen bg-[var(--light-green)]  flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+    <div className="h-screen bg-[var(--light-green)]  flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center md:mx-0 md:my-0">
       {/* Hide image on screens smaller than 478px */}
       <div className="hidden md:block md:w-1/3 max-w-xs">
         <Image src={passwordimage} alt="Reset password illustration" />
       </div>
-      <form className="bg-[var(--light-green)]  p-8 rounded shadow-md w-full max-w-md" onSubmit={handleSubmit}>
+      <form className="bg-[var(--light-green)]  p-8 rounded  w-full max-w-md" onSubmit={handleSubmit}>
         <h2 className="text-[var(--dark-green)]  w-full font-bold h-6 mb-12 text-center" style={{ fontFamily: 'Manrope', fontSize: '32px', fontWeight: 800, lineHeight: '49.18px' }}>
           Reset Password
         </h2>

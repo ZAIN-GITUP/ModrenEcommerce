@@ -4,17 +4,11 @@ const Cart = () => {
   return (
     <div className="container  mx-auto px-4 py-8 min-h-screen" data-aos="fade-up">
       <div className="flex flex-col items-center justify-center space-y-4">
-        {/* Cart Heading */}
+    
         <h1 className="text-4xl font-bold text-center mt-12 mb-2">Cart</h1>
         
-        {/* Breadcrumb */}
-        <div className="w-full flex justify-center items-center text-gray-500 space-x-2 text-sm">
-          <span>1. Shopping Cart</span>
-          <span>&gt;</span>
-          <span className="text-gray-700 font-semibold">2. Checkout Details</span>
-          <span>&gt;</span>
-          <span>3. Order Complete</span>
-        </div>
+      
+        
 
         {/* Cart Table */}
         <div className="w-full max-w-5xl bg-gray-50 shadow-lg rounded-lg overflow-hidden">

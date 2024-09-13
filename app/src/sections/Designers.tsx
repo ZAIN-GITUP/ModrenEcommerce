@@ -1,13 +1,14 @@
 "use client";
 import React, { useEffect } from 'react';
-import Image from 'next/image';
+import { useGetMenProductsQuery } from '@/app/src/lib/services/products'; // Make sure the path is correct
+import { Product } from '@/app/src/types/products';
+import { motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { motion } from 'framer-motion';
-
-import products from '@/app/src/componenets/products'; // Adjust the import path as needed
 
 const DesignerClothes: React.FC = () => {
+  const { data: products, error, isLoading } = useGetMenProductsQuery();
+
   useEffect(() => {
     AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
   }, []);
@@ -21,6 +22,12 @@ const DesignerClothes: React.FC = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
+
+  if (isLoading) return <p>Loading products...</p>;
+  if (error) return <p>Error fetching products!</p>;
+
+  // Limit to 3 products
+  const limitedProducts = products?.slice(0, 3);
 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-8 sm:py-16">
@@ -55,32 +62,26 @@ const DesignerClothes: React.FC = () => {
         data-aos="fade-up"
         data-aos-delay="400"
       >
-        {products.map((product, index) => (
+        {limitedProducts?.map((product: Product, index: number) => (
           <motion.div
-            key={index}
-            className="bg-white rounded-lg shadow-lg p-4 sm:p-6"
-            initial="hidden"
-            animate="visible"
+            key={product.id}
+            className="text-center bg-white rounded-lg shadow-lg p-4 m-2 w-full sm:w-80 md:w-96 lg:w-64"
             variants={itemVariants}
             transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.1 }}
-            data-aos="fade-up"
-            data-aos-delay={`${500 + index * 100}`}
+            data-aos="zoom-in"
+            data-aos-delay={index * 100}
           >
-            <Image
-              src={product.imgSrc}
+            <img
+              src={product.image}
               alt={product.title}
-              className="w-full h-32 sm:h-48 object-cover rounded-lg mb-3 sm:mb-4"
-              width={500} // Adjust width as needed
-              height={500} // Adjust height as needed
+              className="w-full h-32 sm:h-48 object-cover rounded-lg mb-3"
             />
-            <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{product.title}</h3>
-            <p className="text-gray-600 text-xs sm:text-sm">{product.description}</p>
+            <h3 className="mt-4 text-lg sm:text-xl font-semibold">{product.title}</h3>
             <div className="flex justify-center items-center mt-2">
               <p className="text-lg sm:text-xl font-bold">{product.price}</p>
               <span className="mx-2 text-gray-600">|</span>
-              <p className="text-yellow-500 text-lg">{product.rating} ★</p>
+              <p className="text-yellow-500 text-lg">{product.rating?.rate} ★</p>
             </div>
-            
           </motion.div>
         ))}
       </motion.div>

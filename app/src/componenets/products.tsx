@@ -1,14 +1,26 @@
-// data/products.js
-import product1 from "@/public/product1.png";
-import product2 from "@/public/product2.png";
-import product3 from "@/public/product3.png";
-// Add imports for all your product images
+import React from 'react';
+import { useGetMenProductsQuery } from '@/app/src/lib/services/products';
+import { Product } from '@/app/src/types/products'; 
 
-const products = [
-  { imgSrc: product1, title: 'Accessories', description: 'Complete your ensemble with designer accessories...', price: '$38.99', rating: '5.0' },
-  { imgSrc: product2, title: 'Dresses', description: 'Explore a stunning range of designer dresses...', price: '$62.99', rating: '4.9' },
-  { imgSrc: product3, title: 'Outerwear', description: 'Browse luxurious designer coats, jackets...', price: '$49.99', rating: '5.0' },
-  // Add more product objects here
-];
+const Products: React.FC = () => {
+  const { data, error, isLoading } = useGetMenProductsQuery();
 
-export default products;
+  if (isLoading) return <p>Loading products...</p>;
+  if (error) return <p>Error fetching products!</p>;
+
+  return (
+    <div>
+      {data?.map((product: Product) => (
+        <div key={product.id}>
+          <img src={product.image} alt={product.title} />
+          <h2>{product.title}</h2>
+          <p>{product.description}</p>
+          <p>Price: {product.price}</p>
+          <p>Rating: {product.rating?.rate}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Products;

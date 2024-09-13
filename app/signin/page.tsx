@@ -105,7 +105,7 @@ const SignupForm = () => {
   };
 
   return (
-    <section className="h-screen  bg-[var(--light-green)] flex flex-col md:flex-row justify-center space-y-10 md:space-y-4 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+    <section className="h-screen  bg-[var(--light-green)] flex flex-col md:flex-row justify-center space-y-10 md:space-y-4 md:space-x-16 items-center  md:mx-0 md:my-0">
       <div className="md:w-1/3 mb-0 max-w-sm hidden md:block  boder  border-1 border-rounded-lg">
         <Image src={signinimg} alt="Sample image" width={300} height={300} />
       </div>
@@ -175,7 +175,7 @@ const SignupForm = () => {
         <div>
           {errors.confirmPassword && <p className="text-[var(--text-green)]  text-xs mt-1">{errors.confirmPassword}</p>}
         </div>
-        <div className="mt-4 flex justify-between font-semibold text-sm">
+        <div className="mt-4 mx-1 flex justify-between font-semibold text-sm">
           <label className="flex text-[var(--dark-green)]  hover:text-[var(--text-green)]  cursor-pointer">
             <input
               className="mr-1"
@@ -189,7 +189,7 @@ const SignupForm = () => {
         {errors.terms && <p className="text-[var(--text-green)]  text-xs mt-1">{errors.terms}</p>}
         <div className="text-center md:text-left">
           <button
-            className="mt-4 bg-[var(--text-green)] hover:bg-[var(--hover-green)]  hover:text-[var(--dark-green)]  w-full h-10 px-4 py-2 text-black  uppercase rounded text-xs tracking-wider"
+            className="mt-4 bg-[var(--text-green)] hover:bg-[var(--hover-green)]  hover:text-[var(--dark-green)]  w-full h-10  mx-1 px-4 py-2 text-black  uppercase rounded text-xs tracking-wider"
             type="submit"
           >
             Sign Up

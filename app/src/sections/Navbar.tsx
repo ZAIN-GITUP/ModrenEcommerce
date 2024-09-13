@@ -1,21 +1,24 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { CgClose } from "react-icons/cg";
 import { FaShoppingCart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { usePathname} from "next/navigation"; // Import useRouter
+import { usePathname, useRouter } from "next/navigation"; // Import useRouter for manual route handling
 import Button from "@/app/src/componenets/Button";
 import Image from "next/image";
 import logo from '@/public/logo.png';
 
 function Navbar() {
-  const [navbarVisible, setNavbarVisible] = useState(false);
-  const [responsiveNavVisible, setResponsiveNavVisible] = useState(false);
-  const [cartVisible, setCartVisible] = useState(false);
-  
-  const router = usePathname(); 
+  const [state, setState] = useState({
+    navbarVisible: false,
+    responsiveNavVisible: false,
+    cartVisible: false,
+  });
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   const sectionLinks = [
     { name: "Home", link: "/#Home" },
@@ -24,10 +27,33 @@ function Navbar() {
     { name: "Contact", link: "/#contact" },
   ];
 
-  
+  // Close the cart when navigating to "/cart" and prevent reloading
+  const handleCartNavigation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setState((prevState) => ({
+      ...prevState,
+      cartVisible: false,
+    }));
+    router.push("/cart"); // Client-side navigation to avoid reload
+  };
+
+  // Close cart when navigating to /cart
+  useEffect(() => {
+    if (pathname === "/cart") {
+      setState((prevState) => ({
+        ...prevState,
+        cartVisible: false,
+      }));
+    }
+  }, [pathname]);
+
+  // Handle scroll to toggle the navbar visibility
   useEffect(() => {
     const handleScroll = () => {
-      setNavbarVisible(window.pageYOffset > 100);
+      setState((prevState) => ({
+        ...prevState,
+        navbarVisible: window.pageYOffset > 100,
+      }));
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -35,7 +61,12 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handleLinkClick = () => setResponsiveNavVisible(false);
+    const handleLinkClick = () =>
+      setState((prevState) => ({
+        ...prevState,
+        responsiveNavVisible: false,
+      }));
+
     const links = document.querySelectorAll(".nav-items-list-item-link");
     links.forEach((link) => {
       link.addEventListener("click", handleLinkClick);
@@ -45,41 +76,45 @@ function Navbar() {
     nav?.addEventListener("click", (e) => e.stopPropagation());
 
     const html = document.querySelector("html");
-    html?.addEventListener("click", () => setResponsiveNavVisible(false));
+    html?.addEventListener("click", () =>
+      setState((prevState) => ({
+        ...prevState,
+        responsiveNavVisible: false,
+      }))
+    );
 
     return () => {
       links.forEach((link) => {
         link.removeEventListener("click", handleLinkClick);
       });
-      html?.removeEventListener("click", () => setResponsiveNavVisible(false));
+      html?.removeEventListener("click", () =>
+        setState((prevState) => ({
+          ...prevState,
+          responsiveNavVisible: false,
+        }))
+      );
     };
   }, []);
-
-  useEffect(() => {
-    const main = document.querySelector("main");
-    if (responsiveNavVisible) {
-      main?.classList.add("blur");
-    } else {
-      main?.classList.remove("blur");
-    }
-  }, [responsiveNavVisible]);
-
-
 
   // Cart popup component
   const CartPopup = () => {
     return (
       <div
         className={`fixed top-0 right-0 w-full sm:w-1/3 h-full bg-[var(--light-green)] shadow-lg transform ${
-          cartVisible ? "translate-x-0" : "translate-x-full"
+          state.cartVisible ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out z-50`}
       >
         <div className="p-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-lg text-[var(--dark-green)]  font-semibold">Shopping Cart</h2>
+            <h2 className="text-lg text-[var(--dark-green)] font-semibold">Shopping Cart</h2>
             <button
               className="text-xl font-semibold"
-              onClick={() => setCartVisible(false)}
+              onClick={() =>
+                setState((prevState) => ({
+                  ...prevState,
+                  cartVisible: false,
+                }))
+              }
             >
               &times;
             </button>
@@ -117,12 +152,13 @@ function Navbar() {
               <span className="font-semibold">$50.00</span>
             </div>
 
-              <Link href="/cart" className="flex flex-col space-y-2">
-              <button className="bg-[var(--text-green)] text-[var(--hover-green)] py-2 rounded">
-                View Cart
-              </button>
-              </Link>
-
+            {/* Handle cart navigation without page reload */}
+            <button
+              onClick={handleCartNavigation}
+              className="bg-[var(--text-green)] text-[var(--hover-green)] py-2 rounded"
+            >
+              View Cart
+            </button>
           </div>
         </div>
       </div>
@@ -133,7 +169,7 @@ function Navbar() {
     <>
       <nav
         className={`fixed top-0 left-0 w-full z-50 ${
-          navbarVisible ? "bg-green-100 shadow-lg" : "bg-transparent"
+          state.navbarVisible ? "bg-green-100 shadow-lg" : "bg-transparent"
         } transition-all duration-300 ease-in-out`}
         data-aos="fade-down"
       >
@@ -155,7 +191,7 @@ function Navbar() {
           <div className="flex-1 flex justify-center md:justify-start">
             <div
               className={`${
-                responsiveNavVisible
+                state.responsiveNavVisible
                   ? "fixed mt-8 p-4 right-0 block bg-[var(--light-green)]"
                   : "hidden"
               } md:flex md:justify-center md:w-full md:top-0 md:right-0 md:relative md:h-auto`}
@@ -196,7 +232,7 @@ function Navbar() {
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 text-[var(--dark-green)] ">
             <motion.div
               className="hidden md:flex text-xl font-bold items-center space-x-4"
               initial={{ opacity: 0 }}
@@ -205,7 +241,12 @@ function Navbar() {
               style={{ color: "var(--dark-green)" }}
             >
               <button
-                onClick={() => setCartVisible(true)} // Show cart popup when clicked
+                onClick={() =>
+                  setState((prevState) => ({
+                    ...prevState,
+                    cartVisible: true,
+                  }))
+                }
                 className="text-2xl"
               >
                 <FaShoppingCart />
@@ -218,23 +259,36 @@ function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
+            >   <button
+            onClick={() =>
+              setState((prevState) => ({
+                ...prevState,
+                cartVisible: true,
+              }))
+            }
+            className="text-2xl"
+          >
+            <FaShoppingCart />
+          </button>
               <button
-                onClick={() => setResponsiveNavVisible((prev) => !prev)}
+                onClick={() =>
+                  setState((prevState) => ({
+                    ...prevState,
+                    responsiveNavVisible: !prevState.responsiveNavVisible,
+                  }))
+                }
                 className="text-3xl"
               >
-                {responsiveNavVisible ? <CgClose /> : <GiHamburgerMenu />}
+                {state.responsiveNavVisible ? <CgClose /> : <GiHamburgerMenu />}
               </button>
-              <button onClick={() => setCartVisible(true)} className="text-2xl">
-                <FaShoppingCart />
-              </button>
+           
             </motion.div>
           </div>
         </div>
       </nav>
 
       {/* Cart Popup */}
-      {cartVisible && <CartPopup />}
+      {state.cartVisible && <CartPopup />}
     </>
   );
 }

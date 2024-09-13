@@ -84,11 +84,11 @@ const EmailForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-[var(--light-green)] h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+    <div className="bg-[var(--light-green)] h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center  md:mx-0 md:my-0">
       <div className="md:w-1/3 max-w-xs">
         <Image src={forgotpasswordimage} alt="Sample image" />
       </div>
-      <form className="bg-[var(--light-green)] p-8 rounded shadow-md w-full max-w-md" onSubmit={handleSubmit}>
+      <form className="bg-[var(--light-green)] p-8 rounded  w-full max-w-md" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold mb-6 text-[var(--dark-green)] text-center">Forgot Password</h2>
         <div className="mb-4">
           <label className="block text-[var(--dark-green)] text-sm font-bold mb-2" htmlFor="email">

@@ -75,7 +75,7 @@ const Loginform: React.FC = () => {
   };
 
   return (
-    <section className="h-screen  bg-[var(--light-green)] flex flex-col sm:flex-row md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+    <section className="h-screen  bg-[var(--light-green)] flex flex-col sm:flex-row md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center px-2 sm:my-2 sm:mx-5 md:mx-0 md:my-0">
       <div className="md:w-1/3 max-w-xs ">
         <Image src={loginimage} className='sm:block hidden  mb-4' alt="Sample image" />
       </div>
