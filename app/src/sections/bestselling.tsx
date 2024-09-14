@@ -6,9 +6,10 @@ import { EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Link from "next/link"; // Import Link from Next.js
+import Link from "next/link";
 import { useDispatch } from 'react-redux';
 import { add } from '@/app/src/lib/features/slices/cartslice'; // Adjust path as necessary
+import { CartItem } from '@/app/src/types/cart'; // Adjust path as necessary
 
 const BestSelling: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,12 +31,14 @@ const BestSelling: React.FC = () => {
     ?.filter((product) => product.category === "women's clothing")
     .slice(0, 3);
 
+  // Function to handle adding a product to the cart
   const handleAdd = (product: Product) => {
-    const cartItem = {
+    const cartItem: CartItem = {
       ...product,
-      price: parseFloat(product.price), // Ensure price is a number
-      quantity: 1
+      quantity: 1 // Ensure quantity is initialized
     };
+
+    console.log("Adding to cart:", cartItem); // Debugging log
     dispatch(add(cartItem));
   };
 
@@ -51,7 +54,7 @@ const BestSelling: React.FC = () => {
         {womenProducts?.map((product: Product, index: number) => (
           <div
             key={product.id}
-            className="relative text-center bg-white rounded-lg shadow-lg py-4 sm:mx-4 w-full sm:w-80 md:w-96 lg:w-64 transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer"
+            className="relative text-center bg-white rounded-lg shadow-lg py-4 sm:mx-4 w-full sm:w-80 md:w-96 lg:w-64 transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer group"
             data-aos="zoom-in"
             data-aos-delay={index * 100}
           >
@@ -66,6 +69,7 @@ const BestSelling: React.FC = () => {
               <span className="mx-2 text-gray-600">|</span>
               <p className="text-yellow-500 text-lg">{product.rating?.rate} ★</p>
             </div>
+            {/* Hover icons for Add to Cart and View Product */}
             <div className="absolute flex flex-col top-2 right-2 p-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <button
                 className="bg-blue-300 text-black font-extrabold p-2 rounded-full"
@@ -74,7 +78,7 @@ const BestSelling: React.FC = () => {
                 <PlusIcon className="h-5 w-5" />
               </button>
               <Link href={`/products/${product.id}`}>
-                <div>
+                <div className="bg-blue-300 text-black font-extrabold p-2 rounded-full">
                   <EyeIcon className="h-5 w-5" />
                 </div>
               </Link>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { CgClose } from "react-icons/cg";
@@ -9,14 +9,19 @@ import { usePathname, useRouter } from "next/navigation";
 import Button from "@/app/src/componenets/Button";
 import Image from "next/image";
 import logo from '@/public/logo.png';
-import { useSelector } from 'react-redux'; 
-type CartItem = {
+import {  useDispatch,useSelector } from 'react-redux'; 
+import { RootState } from '@/app/src/types/cart';
+import { add, remove, updateQuantity, clearCart } from '@/app/src/lib/features/slices/cartslice';
+
+
+export type CartItem = {
   id: number;
   title: string;
   image: string;
   price: number;
   quantity: number;
 };
+
 
 function Navbar() {
   const [state, setState] = useState({
@@ -29,7 +34,15 @@ function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const cartItems = useSelector((state: any) => state.cart); // Get cart items from Redux store
+  // Get cart items from Redux store
+
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+
+    const totalCartCount = Array.isArray(cartItems)
+        ? cartItems.reduce((total: number, item: CartItem) => total + item.quantity, 0)
+        : 0;
+
 
   const sectionLinks = [
     { name: "Home", link: "/#Home" },
@@ -84,93 +97,112 @@ function Navbar() {
     }, 300);
   };
 
- 
+  
+const CartPopup = () => {
+  const dispatch = useDispatch();
+  const cartItems: CartItem[] = useSelector((state: any) => state.cart.items || []);
+  
+  const getTotalPrice = () => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+  };
+  const handleIncrement = (itemId: number) => {
+    dispatch(updateQuantity({ id: itemId, change: 1 }));
+  };
+  
+  const handleDecrement = (itemId: number) => {
+    dispatch(updateQuantity({ id: itemId, change: -1 }));
+  };
+  
+  const handleRemove = (itemId: number) => {
+    dispatch(remove(itemId));
+  };
+  return (
+    <div
+      className={`fixed top-20 right-0 w-full sm:w-1/3 h-full bg-[var(--light-green)] shadow-lg transform ${state.cartVisible ? "translate-x-0" : "translate-x-full"} transition-transform duration-300 ease-in-out z-50`}
+      ref={cartPopupRef}
+    >
+      <div className="p-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg text-[var(--dark-green)] font-semibold">Shopping Cart</h2>
+          <button
+            className="text-xl font-semibold"
+            onClick={() =>
+              setState((prevState) => ({
+                ...prevState,
+                cartVisible: false,
+              }))
+            }
+          >
+            &times;
+          </button>
+        </div>
 
-  const CartPopup = () => {
-    const cartItems: CartItem[] = useSelector((state: any) => state.cart || []);
-
-  
-    const getTotalPrice = () => {
-      return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-    };
-  
-    return (
-      <div
-        className={`fixed top-0 right-0 w-full sm:w-1/3 h-full bg-[var(--light-green)] shadow-lg transform ${
-          state.cartVisible ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 ease-in-out z-50`}
-      >
-        <div className="p-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg text-[var(--dark-green)] font-semibold">Shopping Cart</h2>
-            <button
-              className="text-xl font-semibold"
-              onClick={() =>
-                setState((prevState) => ({
-                  ...prevState,
-                  cartVisible: false,
-                }))
-              }
-            >
-              &times;
-            </button>
-          </div>
-  
-          <div className="my-4">
-            {cartItems.length > 0 ? (
-              cartItems.map((item: any) => (
-                <div key={item.id} className="flex items-center justify-between mb-4">
-                  <div className="flex items-center">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      className="w-16 h-16 object-cover mr-4"
-                    />
-                    <div>
-                      <h3 className="font-semibold">{item.title}</h3>
-                      <div className="flex items-center space-x-2 mt-2">
-                        <button className="p-1 border border-gray-400">-</button>
-                        <span className="font-medium">{item.quantity}</span>
-                        <button className="p-1 border border-gray-400">+</button>
-                      </div>
+        <div className="my-4">
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => (
+              <div key={item.id} className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <div>
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <button
+                        onClick={() => handleDecrement(item.id)}
+                        className="p-1 border border-gray-400"
+                        disabled={item.quantity <= 1}
+                      >
+                        -
+                      </button>
+                      <span className="font-medium">{item.quantity}</span>
+                      <button
+                        onClick={() => handleIncrement(item.id)}
+                        className="p-1 border border-gray-400"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
-                  <div>
-                    <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
-                    <button className="ml-2 text-red-500 text-xl">&times;</button>
-                  </div>
                 </div>
-              ))
-            ) : (
-              <div>No items in cart</div>
-            )}
+                <div>
+                  <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+                  <button
+                    onClick={() => handleRemove(item.id)}
+                    className="ml-2 text-red-500 text-xl"
+                  >
+                    &times;
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>No items in cart</div>
+          )}
+        </div>
+
+        <div className="border-t pt-4">
+          <div className="flex justify-between mb-4">
+            <span className="font-semibold">Subtotal:</span>
+            <span className="font-semibold">${getTotalPrice()}</span>
           </div>
-  
-          <div className="border-t pt-4">
-            <div className="flex justify-between mb-4">
-              <span className="font-semibold">Subtotal:</span>
-              <span className="font-semibold">${getTotalPrice()}</span>
-            </div>
-  
-            <button
-              onClick={handleCartNavigation}
-              className="bg-[var(--text-green)] text-[var(--hover-green)] py-2 rounded w-full"
-            >
-              View Cart
-            </button>
-          </div>
+
+          <button
+            onClick={handleCartNavigation}
+            className="bg-[var(--text-green)] text-[var(--hover-green)] py-2 rounded w-full"
+          >
+            View Cart
+          </button>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
+
+  
   
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-50 ${
-          state.navbarVisible ? "bg-green-100 shadow-lg" : "bg-transparent"
-        } transition-all duration-300 ease-in-out`}
+        className={`fixed top-0 left-0 w-full z-50 ${state.navbarVisible ? "bg-green-100 shadow-lg" : "bg-transparent"} transition-all duration-300 ease-in-out`}
         data-aos="fade-down"
       >
         <div className="relative flex max-w-7xl mx-auto items-center justify-between py-4 px-6">
@@ -190,11 +222,7 @@ function Navbar() {
 
           <div className="flex-1 flex justify-center md:justify-start">
             <div
-              className={`${
-                state.responsiveNavVisible
-                  ? "fixed mt-8 p-4 right-0 block bg-[var(--light-green)]"
-                  : "hidden"
-              } md:flex md:justify-center md:w-full md:top-0 md:right-0 md:relative md:h-auto`}
+              className={`${state.responsiveNavVisible ? "fixed mt-8 p-4 right-0 block bg-[var(--light-green)]" : "hidden"} md:flex md:justify-center md:w-full md:top-0 md:right-0 md:relative md:h-auto`}
             >
               <ul className="flex flex-col h-full items-center space-y-0 md:space-y-0 md:flex-row md:space-x-6">
                 {sectionLinks.map(({ name, link }, index) => (
@@ -232,7 +260,7 @@ function Navbar() {
             </div>
           </div>
 
-          <div className="flex items-center space-x-4 text-[var(--dark-green)] ">
+          <div className="flex items-center space-x-4 text-[var(--dark-green)]">
             <motion.div
               className="hidden md:flex text-xl font-bold items-center space-x-4"
               initial={{ opacity: 0 }}
@@ -247,9 +275,14 @@ function Navbar() {
                     cartVisible: true,
                   }))
                 }
-                className="text-2xl"
+                className="relative text-2xl"
               >
                 <FaShoppingCart />
+                {totalCartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalCartCount}
+                  </span>
+                )}
               </button>
               <Button text="LOGIN" link="/login" />
             </motion.div>
@@ -267,9 +300,14 @@ function Navbar() {
                     cartVisible: true,
                   }))
                 }
-                className="text-2xl"
+                className="relative text-2xl"
               >
                 <FaShoppingCart />
+                {totalCartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalCartCount}
+                  </span>
+                )}
               </button>
               <button
                 onClick={() =>

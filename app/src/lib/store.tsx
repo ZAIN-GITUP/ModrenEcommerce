@@ -1,27 +1,30 @@
 import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from '@/app/src/lib/features/slices/cartslice'; // Adjust the path
+import { productsApi } from '@/app/src/lib/services/products'; // Adjust the path
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import userReducer from '@/app/src/lib/features/slices/userslice'; 
-import { productsApi } from '@/app/src/lib/services/products'; // Adjust import as needed
 
 const persistConfig = {
   key: 'root',
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
+const persistedCartReducer = persistReducer(persistConfig, cartReducer);
 
 export const store = configureStore({
   reducer: {
-    user: persistedReducer,
-    [productsApi.reducerPath]: productsApi.reducer, // Add RTK Query reducer
+    cart: persistedCartReducer,
+    [productsApi.reducerPath]: productsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST'],
       },
-    }).concat(productsApi.middleware), // Add RTK Query middleware
+    }).concat(productsApi.middleware),
 });
 
 export const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
