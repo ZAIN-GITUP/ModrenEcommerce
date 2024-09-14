@@ -8,10 +8,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Link from "next/link";
 import { useDispatch } from 'react-redux';
-import { add } from '@/app/src/lib/features/slices/cartslice'; // Adjust path as necessary
-import { CartItem } from '@/app/src/types/cart'; // Adjust path as necessary
+import { add } from '@/app/src/lib/features/slices/cartslice';
+import { CartItem } from '@/app/src/types/cart';
 import Image from 'next/image';
-
 const OurProduct: React.FC = () => {
   const dispatch = useDispatch();
   const { data: products = [], error, isLoading } = useGetMenProductsQuery();
@@ -26,23 +25,32 @@ const OurProduct: React.FC = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log("Fetched products:", products);
-  }, [products]);
-
   if (isLoading) return <p>Loading products...</p>;
   if (error) return <p>Error fetching products!</p>;
 
-  // Log active category and filtered products
-  console.log('Active Category:', activeCategory);
-  const filteredProducts = products
-    .filter((product: Product) => {
-      console.log('Product Category:', product.category); // Debugging log
-      return product.category === activeCategory;
-    })
-    .slice(0, visibleProducts);
+  // Mapping categories to the actual API categories
+  const getCategoryFilter = (category: string) => {
+    switch (category) {
+      case 'Sale':
+        return "men's clothing";
+      case 'Hot':
+        return "women's clothing";
+      case 'New Arrivals':
+        return ["electronics", "jewelery"]; // New Arrivals as miscellaneous
+      case 'Accessories':
+        return "electronics"; // Accessories as electronics
+      default:
+        return '';
+    }
+  };
 
-  console.log('Filtered Products:', filteredProducts);
+  const filteredProducts = products.filter((product: Product) => {
+    const categoryFilter = getCategoryFilter(activeCategory);
+    if (Array.isArray(categoryFilter)) {
+      return categoryFilter.includes(product.category);
+    }
+    return product.category === categoryFilter;
+  }).slice(0, visibleProducts);
 
   // Function to handle adding a product to the cart
   const handleAdd = (product: Product) => {
@@ -51,7 +59,6 @@ const OurProduct: React.FC = () => {
       quantity: 1 // Ensure quantity is initialized
     };
 
-    console.log("Adding to cart:", cartItem); // Debugging log
     dispatch(add(cartItem));
   };
 
@@ -62,89 +69,40 @@ const OurProduct: React.FC = () => {
       </h2>
 
       {/* Category Tabs */}
-      <div
-        className="grid grid-cols-2 gap-4 justify-center mb-6 max-w-sm mx-auto sm:flex sm:space-x-6"
-        data-aos="fade-up"
-      >
-        <button
-          className={`${
-            activeCategory === 'Sale'
-              ? 'text-blue-500 border-b-2 border-blue-500'
-              : 'hover:text-blue-500'
-          }`}
-          onClick={() => setActiveCategory('Sale')}
-        >
+      <div className="grid grid-cols-2 gap-4 justify-center mb-6 max-w-sm mx-auto sm:flex sm:space-x-6" data-aos="fade-up">
+        <button className={`${activeCategory === 'Sale' ? 'text-blue-500 border-b-2 border-blue-500' : 'hover:text-blue-500'}`} onClick={() => setActiveCategory('Sale')}>
           Sale
         </button>
-        <button
-          className={`${
-            activeCategory === 'Hot'
-              ? 'text-blue-500 border-b-2 border-blue-500'
-              : 'hover:text-blue-500'
-          }`}
-          onClick={() => setActiveCategory('Hot')}
-        >
+        <button className={`${activeCategory === 'Hot' ? 'text-blue-500 border-b-2 border-blue-500' : 'hover:text-blue-500'}`} onClick={() => setActiveCategory('Hot')}>
           Hot
         </button>
-        <button
-          className={`${
-            activeCategory === 'New Arrivals'
-              ? 'text-blue-500 border-b-2 border-blue-500'
-              : 'hover:text-blue-500'
-          }`}
-          onClick={() => setActiveCategory('New Arrivals')}
-        >
+        <button className={`${activeCategory === 'New Arrivals' ? 'text-blue-500 border-b-2 border-blue-500' : 'hover:text-blue-500'}`} onClick={() => setActiveCategory('New Arrivals')}>
           New Arrivals
         </button>
-        <button
-          className={`${
-            activeCategory === 'Accessories'
-              ? 'text-blue-500 border-b-2 border-blue-500'
-              : 'hover:text-blue-500'
-          }`}
-          onClick={() => setActiveCategory('Accessories')}
-        >
+        <button className={`${activeCategory === 'Accessories' ? 'text-blue-500 border-b-2 border-blue-500' : 'hover:text-blue-500'}`} onClick={() => setActiveCategory('Accessories')}>
           Accessories
         </button>
       </div>
 
       {/* Product Grid */}
-      <div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
         {filteredProducts.length === 0 ? (
           <p>No products available in this category.</p>
         ) : (
           filteredProducts.map((product: Product, index: number) => (
-            <div
-              key={product.id}
-              className="relative text-center bg-white rounded-lg shadow-lg py-4 my-2 w-full sm:w-80 md:w-96 lg:w-64 transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer group"
-              data-aos="zoom-in"
-              data-aos-delay={index * 100}
-            >
-              <Image
-                src={product.image}
-                alt={product.title}
-                width={200}
-                height={200}
-                className="w-full h-32 sm:h-48 object-cover rounded-lg mb-3"
-              />
+            <div key={product.id} className="relative text-center bg-white rounded-lg shadow-lg py-4 my-2 w-full sm:w-80 md:w-96 lg:w-64 transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer group" data-aos="zoom-in" data-aos-delay={index * 100}>
+              <Image src={product.image} alt={product.title} width={200} height={200} className="w-full h-32 sm:h-48 object-cover rounded-lg mb-3" />
               <h3 className="mt-4 text-lg sm:text-xl font-semibold text-gray-800 hover:text-green-600 transition-colors">
                 {product.title}
               </h3>
               <div className="flex justify-center items-center mt-2">
-                <p className="text-lg sm:text-xl font-bold text-gray-900 hover:text-green-600">
-                  ${product.price}
-                </p>
+                <p className="text-lg sm:text-xl font-bold text-gray-900 hover:text-green-600">${product.price}</p>
                 <span className="mx-2 text-gray-600">|</span>
                 <p className="text-yellow-500 text-lg">{product.rating?.rate} ★</p>
               </div>
               {/* Hover icons for Add to Cart and View Product */}
               <div className="absolute flex flex-col top-2 right-2 p-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button
-                  className="bg-blue-300 text-black font-extrabold p-2 rounded-full"
-                  onClick={() => handleAdd(product)}
-                >
+                <button className="bg-blue-300 text-black font-extrabold p-2 rounded-full" onClick={() => handleAdd(product)}>
                   <PlusIcon className="h-5 w-5" />
                 </button>
                 <Link href={`/products/${product.id}`}>
