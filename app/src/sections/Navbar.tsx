@@ -98,103 +98,108 @@ function Navbar() {
   };
 
   
-const CartPopup = () => {
-  const dispatch = useDispatch();
-  const cartItems: CartItem[] = useSelector((state: any) => state.cart.items || []);
+  const CartPopup = () => {
+    const dispatch = useDispatch();
+    const cartItems: CartItem[] = useSelector((state: any) => state.cart.items || []);
   
-  const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-  };
-  const handleIncrement = (itemId: number) => {
-    dispatch(updateQuantity({ id: itemId, change: 1 }));
-  };
+    const getTotalPrice = () => {
+      return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    };
   
-  const handleDecrement = (itemId: number) => {
-    dispatch(updateQuantity({ id: itemId, change: -1 }));
-  };
+    const handleIncrement = (itemId: number) => {
+      dispatch(updateQuantity({ id: itemId, change: 1 }));
+    };
   
-  const handleRemove = (itemId: number) => {
-    dispatch(remove(itemId));
-  };
-  return (
-    <div
-      className={`fixed top-20 right-0 w-full sm:w-1/3 h-full bg-[var(--light-green)] shadow-lg transform ${state.cartVisible ? "translate-x-0" : "translate-x-full"} transition-transform duration-300 ease-in-out z-50`}
-      ref={cartPopupRef}
-    >
-      <div className="p-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg text-[var(--dark-green)] font-semibold">Shopping Cart</h2>
-          <button
-            className="text-xl font-semibold"
-            onClick={() =>
-              setState((prevState) => ({
-                ...prevState,
-                cartVisible: false,
-              }))
-            }
-          >
-            &times;
-          </button>
-        </div>
-
-        <div className="my-4">
-          {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <div key={item.id} className="flex items-center justify-between mb-4">
-                <div className="flex items-center">
-                  <div>
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <div className="flex items-center space-x-2 mt-2">
-                      <button
-                        onClick={() => handleDecrement(item.id)}
-                        className="p-1 border border-gray-400"
-                        disabled={item.quantity <= 1}
-                      >
-                        -
-                      </button>
-                      <span className="font-medium">{item.quantity}</span>
-                      <button
-                        onClick={() => handleIncrement(item.id)}
-                        className="p-1 border border-gray-400"
-                      >
-                        +
-                      </button>
+    const handleDecrement = (itemId: number) => {
+      dispatch(updateQuantity({ id: itemId, change: -1 }));
+    };
+  
+    const handleRemove = (itemId: number) => {
+      dispatch(remove(itemId));
+    };
+  
+    return (
+      <div
+        className={`fixed  top 16 sm:top-20 right-0 w-full sm:w-1/3 h-full bg-[var(--light-green)] shadow-lg transform ${state.cartVisible ? "translate-x-0" : "translate-x-full"} transition-transform duration-300 ease-in-out z-50`}
+        ref={cartPopupRef}
+      >
+        <div className="p-4 h-full flex flex-col">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg text-[var(--dark-green)] font-semibold">Shopping Cart</h2>
+            <button
+              className="text-xl font-semibold"
+              onClick={() =>
+                setState((prevState) => ({
+                  ...prevState,
+                  cartVisible: false,
+                }))
+              }
+            >
+              &times;
+            </button>
+          </div>
+  
+          {/* Cart Items Scrollable Area */}
+          <div className="my-4 flex-grow overflow-y-auto max-h-[calc(3*6rem)] md:max-h-[calc(2*8rem)]">
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                <div key={item.id} className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div>
+                      <h3 className="font-semibold">{item.title}</h3>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <button
+                          onClick={() => handleDecrement(item.id)}
+                          className="p-1 border border-gray-400"
+                          disabled={item.quantity <= 1}
+                        >
+                          -
+                        </button>
+                        <span className="font-medium">{item.quantity}</span>
+                        <button
+                          onClick={() => handleIncrement(item.id)}
+                          className="p-1 border border-gray-400"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                   </div>
+                  <div>
+                    <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+                    <button
+                      onClick={() => handleRemove(item.id)}
+                      className="ml-2 text-red-500 text-xl"
+                    >
+                      &times;
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
-                  <button
-                    onClick={() => handleRemove(item.id)}
-                    className="ml-2 text-red-500 text-xl"
-                  >
-                    &times;
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div>No items in cart</div>
-          )}
-        </div>
-
-        <div className="border-t pt-4">
-          <div className="flex justify-between mb-4">
-            <span className="font-semibold">Subtotal:</span>
-            <span className="font-semibold">${getTotalPrice()}</span>
+              ))
+            ) : (
+              <div>No items in cart</div>
+            )}
           </div>
-
-          <button
-            onClick={handleCartNavigation}
-            className="bg-[var(--text-green)] text-[var(--hover-green)] py-2 rounded w-full"
-          >
-            View Cart
-          </button>
+  
+          {/* Footer with Subtotal and View Cart Button */}
+          <div className="border-t pt-4">
+            <div className="flex justify-between mb-4">
+              <span className="font-semibold">Subtotal:</span>
+              <span className="font-semibold">${getTotalPrice()}</span>
+            </div>
+  
+            <button
+              onClick={handleCartNavigation}
+              className="bg-[var(--text-green)] text-[var(--hover-green)] py-2 rounded w-full"
+            >
+              View Cart
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
+  
 
   
   
