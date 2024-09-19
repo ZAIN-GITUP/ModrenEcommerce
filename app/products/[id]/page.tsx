@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { add } from "@/app/src/lib/features/slices/cartslice"; // Adjust path as necessary
-import { useGetProductByIdQuery } from "@/app/src/lib/services/products"; // Adjust path if needed
-import { CartItem } from "@/app/src/types/cart"; // Adjust path as necessary
+import { add } from "@/app/src/lib/features/slices/cartslice"; 
+import { useGetProductByIdQuery } from "@/app/src/lib/services/products"
+import { CartItem } from "@/app/src/types/cart";
 
 interface ProductDetailProps {
   params: {

@@ -8,8 +8,8 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Link from "next/link";
 import { useDispatch } from 'react-redux';
-import { add } from '@/app/src/lib/features/slices/cartslice'; // Adjust path as necessary
-import { CartItem } from '@/app/src/types/cart'; // Adjust path as necessary
+import { add } from '@/app/src/lib/features/slices/cartslice'; 
+import { CartItem } from '@/app/src/types/cart'; 
 
 const BestSelling: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,27 +43,31 @@ const BestSelling: React.FC = () => {
   };
 
   return (
-    <section className="text-center gap-4 m:px-4 lg:px-6">
+    <section className="text-center gap-4 px-4 lg:px-6">
       <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold" data-aos="fade-up">
         Best Selling
       </h2>
       <p className="mt-2 text-gray-600 text-sm sm:text-base lg:text-lg" data-aos="fade-up" data-aos-delay="200">
         Get in on the trend with our curated selection of best-selling styles.
       </p>
-      <div className="flex flex-wrap justify-center gap-4 mt-8" data-aos="fade-up" data-aos-delay="400">
+      {/* Responsive Card Grid */}
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8" 
+        data-aos="fade-up" data-aos-delay="400"
+      >
         {womenProducts?.map((product: Product, index: number) => (
           <div
             key={product.id}
-            className="relative text-center bg-white rounded-lg shadow-lg py-4 sm:mx-4 w-full sm:w-80 md:w-96 lg:w-64 transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer group"
+            className="relative text-center bg-white rounded-lg shadow-lg p-8 transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer group"
             data-aos="zoom-in"
             data-aos-delay={index * 100}
           >
             <img src={product.image} alt={product.title} className="w-full h-48 object-cover rounded-lg mb-3" />
-            <h3 className="mt-4 text-lg sm:text-xl font-semibold text-gray-800 hover:text-green-600 transition-colors">
+            <h3 className="mt-4 text-lg sm:text-xl font-semibold text-gray-800 hover:text-[var(--text-green)] transition-colors">
               {product.title}
             </h3>
             <div className="flex justify-center items-center mt-2">
-              <p className="text-lg sm:text-xl font-bold text-gray-900 hover:text-green-600">
+              <p className="text-lg sm:text-xl font-bold text-gray-900 hover:text-[var(--text-green)]">
                 ${product.price}
               </p>
               <span className="mx-2 text-gray-600">|</span>
@@ -72,13 +76,13 @@ const BestSelling: React.FC = () => {
             {/* Hover icons for Add to Cart and View Product */}
             <div className="absolute flex flex-col top-2 right-2 p-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <button
-                className="bg-blue-300 text-black font-extrabold p-2 rounded-full"
+                className="bg-[var(--light-green)] text-[var(--text-green)] font-extrabold p-2 rounded-full"
                 onClick={() => handleAdd(product)}
               >
                 <PlusIcon className="h-5 w-5" />
               </button>
               <Link href={`/products/${product.id}`}>
-                <div className="bg-blue-300 text-black font-extrabold p-2 rounded-full">
+                <div className="bg-[var(--light-green)] text-[var(--text-green)] font-extrabold p-2 right-8 rounded-full">
                   <EyeIcon className="h-5 w-5" />
                 </div>
               </Link>
@@ -86,6 +90,7 @@ const BestSelling: React.FC = () => {
           </div>
         ))}
       </div>
+      {/* Button */}
       <div className="flex justify-center mt-6" data-aos="fade-up" data-aos-delay="600">
         <button className="flex items-center px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
           See All

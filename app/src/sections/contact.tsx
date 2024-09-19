@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const Contact: React.FC = () => {
   return (
     <motion.div
-      className="max-w-[700px] mx-auto my-[2rem] flex flex-col gap-4 items-center justify-center "
+      className="max-w-[700px] mx-auto my-[2rem] flex flex-col gap-4 items-center justify-center p-4 "
       id="contact"
       initial="hidden"
       whileInView="visible"

@@ -6,7 +6,7 @@ import Hero from "@/app/src/sections/Hero";
 import Contact from "@/app/src/sections/contact";
 
 import DesignerClothes from "@/app/src/sections/Designers";
-import TestimonialCard from "@/app/src/sections/Feedbacks";
+import TestimonialData from "@/app/src/sections/Feedbacks";
 import ReduxProvider from '@/app/src/lib/provider'; 
 // pages/index.tsx
 export default function Home() {
@@ -25,7 +25,8 @@ export default function Home() {
             <section id="Features">
               <ExclusiveOffer />
        <DesignerClothes/>
-             {/* <TestimonialCard/> */}
+      
+             
             </section>
             <section id="contact">
           <Contact/>
