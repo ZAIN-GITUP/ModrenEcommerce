@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React, { useState } from "react";
 
 interface Product {
@@ -23,7 +24,11 @@ const AdminForm: React.FC = () => {
   // Generate unique ID
   const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     // Check if the field is price and ensure it's not less than 0
     if (name === "price") {
@@ -68,7 +73,7 @@ const AdminForm: React.FC = () => {
       description: "",
       price: 0,
       image: "",
-      category: "", // Reset category
+      category: "", 
     });
   };
 
@@ -129,32 +134,46 @@ const AdminForm: React.FC = () => {
 
         {/* Category */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2 text-[var(--dark-green)]">
-            Category
-          </label>
-          <select
-            name="category"
-            value={product.category}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-light-green"
-          >
-            <option value="">Select Category</option>
-            <option value="Men's Clothing">Men's Clothing</option>
-            <option value="Women's Clothing">Women's Clothing</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Electronics">Electronics</option>
-          </select>
-        </div>
+  <label className="block text-sm font-semibold mb-2 text-[var(--dark-green)]">
+{/* eslint-disable-line react/no-unescaped-entities */}
+    Category
+  </label>
+  <select
+    name="category"
+    value={product.category}
+    onChange={handleInputChange}
+    required
+    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-light-green"
+  >
+    <option value="">Select Category</option>
+    <option value="Men&#39;s Clothing">Men&#39;s Clothing</option>
+    <option value="Women&#39;s Clothing">Women&#39;s Clothing</option>
+    <option value="Accessories">Accessories</option>
+    <option value="Electronics">Electronics</option>
+  </select>
+</div>
+
+
 
         {/* Image Upload */}
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2 text-[var(--dark-green)]">
             Image
           </label>
-          <input type="file" accept="image/*" onChange={handleImageChange} required />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            required
+          />
           {product.image && (
-            <img src={product.image} alt="Preview" className="mt-4 w-32 h-32 object-cover text-[var(--dark-green)]" />
+            <Image
+              src={product.image}
+              alt="Preview"
+              width={500} 
+              height={500}
+              className="mt-4 w-32 h-32 object-cover text-[var(--dark-green)]"
+            />
           )}
         </div>
 

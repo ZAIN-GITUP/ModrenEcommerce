@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useDispatch } from 'react-redux';
 import { add } from '@/app/src/lib/features/slices/cartslice'; // Adjust path as necessary
 import { CartItem } from '@/app/src/types/cart'; // Adjust path as necessary
+import Image from "next/image";
 
 const DesignerClothes: React.FC = () => {
   const dispatch = useDispatch();
@@ -56,9 +57,11 @@ const DesignerClothes: React.FC = () => {
             data-aos="zoom-in"
             data-aos-delay={index * 100}
           >
-            <img
+            <Image
               src={product.image}
               alt={product.title}
+              width={500} 
+              height={500}
               className="w-full h-48 object-cover rounded-lg mb-3"
             />
             <h3 className="mt-4 text-lg sm:text-xl font-semibold text-gray-800 hover:text-[var(--text-green)] transition-colors">
@@ -89,12 +92,17 @@ const DesignerClothes: React.FC = () => {
         ))}
       </div>
 
-      {/* See All Button */}
       <div className="flex justify-center mt-6" data-aos="fade-up" data-aos-delay="600">
-        <button className="flex items-center px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-          See All
-          <ChevronRightIcon className="h-5 w-5 ml-2" />
-        </button>
+
+
+
+<Link href="/products">
+  <button className="flex items-center px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+    See All
+    <ChevronRightIcon className="h-5 w-5 ml-2" />
+  </button>
+</Link>
+
       </div>
     </section>
   );

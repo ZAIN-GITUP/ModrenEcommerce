@@ -2,14 +2,15 @@
 import React, { useEffect } from "react";
 import { useGetMenProductsQuery } from "@/app/src/lib/services/products";
 import { Product } from "@/app/src/types/products";
-import { EyeIcon, PlusIcon } from '@heroicons/react/24/outline'; 
+import { EyeIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Link from "next/link";
-import { useDispatch } from 'react-redux';
-import { add } from '@/app/src/lib/features/slices/cartslice'; 
-import { CartItem } from '@/app/src/types/cart'; 
+import { useDispatch } from "react-redux";
+import { add } from "@/app/src/lib/features/slices/cartslice";
+import { CartItem } from "@/app/src/types/cart";
+import Image from "next/image";
 
 const BestSelling: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const BestSelling: React.FC = () => {
   const handleAdd = (product: Product) => {
     const cartItem: CartItem = {
       ...product,
-      quantity: 1 // Ensure quantity is initialized
+      quantity: 1, // Ensure quantity is initialized
     };
 
     console.log("Adding to cart:", cartItem); // Debugging log
@@ -44,16 +45,24 @@ const BestSelling: React.FC = () => {
 
   return (
     <section className="text-center gap-4 px-4 lg:px-6">
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold" data-aos="fade-up">
+      <h2
+        className="text-2xl sm:text-3xl lg:text-4xl font-bold"
+        data-aos="fade-up"
+      >
         Best Selling
       </h2>
-      <p className="mt-2 text-gray-600 text-sm sm:text-base lg:text-lg" data-aos="fade-up" data-aos-delay="200">
+      <p
+        className="mt-2 text-gray-600 text-sm sm:text-base lg:text-lg"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
         Get in on the trend with our curated selection of best-selling styles.
       </p>
       {/* Responsive Card Grid */}
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8" 
-        data-aos="fade-up" data-aos-delay="400"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8"
+        data-aos="fade-up"
+        data-aos-delay="400"
       >
         {womenProducts?.map((product: Product, index: number) => (
           <div
@@ -62,7 +71,13 @@ const BestSelling: React.FC = () => {
             data-aos="zoom-in"
             data-aos-delay={index * 100}
           >
-            <img src={product.image} alt={product.title} className="w-full h-48 object-cover rounded-lg mb-3" />
+            <Image
+              src={product.image}
+              alt={product.title}
+              width={500} 
+              height={500}
+              className="w-full h-48 object-cover rounded-lg mb-3"
+            />
             <h3 className="mt-4 text-lg sm:text-xl font-semibold text-gray-800 hover:text-[var(--text-green)] transition-colors">
               {product.title}
             </h3>
@@ -71,7 +86,9 @@ const BestSelling: React.FC = () => {
                 ${product.price}
               </p>
               <span className="mx-2 text-gray-600">|</span>
-              <p className="text-yellow-500 text-lg">{product.rating?.rate} ★</p>
+              <p className="text-yellow-500 text-lg">
+                {product.rating?.rate} ★
+              </p>
             </div>
             {/* Hover icons for Add to Cart and View Product */}
             <div className="absolute flex flex-col top-2 right-2 p-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -91,11 +108,17 @@ const BestSelling: React.FC = () => {
         ))}
       </div>
       {/* Button */}
-      <div className="flex justify-center mt-6" data-aos="fade-up" data-aos-delay="600">
-        <button className="flex items-center px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-          See All
-          <ChevronRightIcon className="h-5 w-5 ml-2" />
-        </button>
+      <div
+        className="flex justify-center mt-6"
+        data-aos="fade-up"
+        data-aos-delay="600"
+      >
+        <Link href="/products">
+          <button className="flex items-center px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+            See All
+            <ChevronRightIcon className="h-5 w-5 ml-2" />
+          </button>
+        </Link>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGetMenProductsQuery } from '@/app/src/lib/services/products';
 import { Product } from '@/app/src/types/products'; 
+import Image from 'next/image';
 
 const Products: React.FC = () => {
   const { data, error, isLoading } = useGetMenProductsQuery();
@@ -12,7 +13,7 @@ const Products: React.FC = () => {
     <div>
       {data?.map((product: Product) => (
         <div key={product.id}>
-          <img src={product.image} alt={product.title} />
+          <Image src={product.image} alt={product.title} />
           <h2>{product.title}</h2>
           <p>{product.description}</p>
           <p>Price: {product.price}</p>

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { add } from "@/app/src/lib/features/slices/cartslice"; 
 import { useGetProductByIdQuery } from "@/app/src/lib/services/products"
 import { CartItem } from "@/app/src/types/cart";
+import Image from "next/image";
 
 interface ProductDetailProps {
   params: {
@@ -32,7 +33,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ params }) => {
     };
 
     dispatch(add(cartItem)); // Dispatch the add action
-    console.log("Product added to cart:", cartItem); // Optional: for debugging
+    
   };
 
   return (
@@ -41,9 +42,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ params }) => {
 
       {/* Using Grid for equal alignment on larger screens */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <img
+        <Image
           src={product.image}
           alt={product.title}
+          width={500} 
+          height={500}
           className="w-full h-auto object-cover rounded-lg"
         />
         <div className="flex flex-col justify-center">
