@@ -53,7 +53,7 @@ const OurProduct: React.FC = () => {
     return product.category === categoryFilter;
   }).slice(0, visibleProducts);
 
-  // Function to handle adding a product to the cart
+  
   const handleAdd = (product: Product) => {
     const cartItem: CartItem = {
       ...product,
@@ -118,7 +118,7 @@ const OurProduct: React.FC = () => {
       </div>
 
       {/* See More Button */}
-      <div className="flex justify-center mt-6" data-aos="fade-up" data-aos-delay="600">
+      <div className="flex boerder-none  justify-center mt-6" data-aos="fade-up" data-aos-delay="600">
 
 
 

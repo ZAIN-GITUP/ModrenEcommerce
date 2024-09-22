@@ -103,8 +103,8 @@ const SeeAll: React.FC = () => {
             All
           </button>
           {[
-  "men&rsquo;s clothing",
-  "women&rsquo;s clothing",
+  "men`clothing",
+  "women`clothing",
   "electronics",
   "jewelery",
 ].map((cat) => (
